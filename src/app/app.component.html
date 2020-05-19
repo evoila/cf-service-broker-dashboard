@@ -28,10 +28,7 @@
         <a class="nav-link" routerLink="/postgresql" routerLinkActive="active">Configuration</a>
       </li>
       <li class="nav-item" *ngIf="dynamicModuleSupport.elasticsearch">
-        <a class="nav-link" routerLink="/elasticsearch/elasticsearch-configuration" routerLinkActive="active">Configuration</a>
-      </li>
-      <li class="nav-item" *ngIf="dynamicModuleSupport.elasticsearch">
-        <a class="nav-link" routerLink="/elasticsearch/elasticsearch-backup" routerLinkActive="active">Snapshot</a>
+        <a class="nav-link" routerLink="/elasticsearch" routerLinkActive="active">Elasticsearch</a>
       </li>
       <li class="nav-item" *ngIf="dynamicModuleSupport.rabbitmq">
         <a class="nav-link" routerLink="/rabbitmq" routerLinkActive="active">Rabbitmq</a>
