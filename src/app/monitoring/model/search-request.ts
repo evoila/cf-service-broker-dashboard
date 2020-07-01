@@ -6,7 +6,8 @@ export class SearchRequest {
     public space: string;
     public docSize?: DocSize;
     public query?: string;
-    public filter: [Map<string, any>]
+    public filter: [Map<string, any>];
+    public index: string;
 }
 export class TimeRange {
     public from?: number

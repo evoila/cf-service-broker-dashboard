@@ -65,6 +65,7 @@ export class LogContextExplorerComponent implements OnInit, OnDestroy {
           highlightsAndHits = {
             hits: data.hits,
             highlightRange: new monaco.Range(index!!, 1, index!!, 1),
+            scrollTo: 0,
           } as HighlightingAndHits
         } else {
           highlightsAndHits = data;
