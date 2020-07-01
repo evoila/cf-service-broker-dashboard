@@ -46,9 +46,9 @@ const components = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule, NgbCollapseModule.forRoot()],
-  declarations: [components],
-  exports: [components],
+  imports: [CommonModule, RouterModule, NgbCollapseModule],
+  declarations: [...components],
+  exports: [...components],
   providers: []
 })
 export class CoreModule {

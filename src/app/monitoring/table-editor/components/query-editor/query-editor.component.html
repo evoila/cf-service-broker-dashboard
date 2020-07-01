@@ -1,12 +1,12 @@
 <div class="query-editor-frame">
     <p> demo query: </p>
-    <p> {{  query.name  + ': '  + query.raw_query.to_json() }} </p>
-    
+    <p> {{  query.name  + ': '  + query.boolQuery.to_json() }} </p>
+
     <div>
       <button class="btn btn-primary cancel_q" (click)="cancel_query_editor()"> cancel </button>
       <button class="btn btn-primary save_q" (click)="save_query()"> take </button>
 
     </div>
-    
+
 
 </div>
