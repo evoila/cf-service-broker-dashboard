@@ -1,19 +1,22 @@
 import { AuthScope } from "../chart-configurator/model/authScope";
 
 export interface ServiceBinding {
-  bindingId: string | null;
+  bindingId?: string;
   appName: string;
   appId: string;
   authScope: AuthScope;
   timestamp: Number;
   deprecated: boolean;
-  type: string; // 'servicebroker' or 'managementportal'
+  type: BindingTypes; // 'servicebroker' or 'managementportal'
 
 }
 
+export enum BindingTypes {
+  SERVICEBROKER = 'servicebroker',
+  MANAGEMENTPORTAL = 'managementportal'
+}
 
 // this is a superclass for either SpaceAndOrg or PartnerAndCustomer
-export interface BindingSpecials {
-  
-
+export interface BindingAuthMetadata {
+  type: string;
 }

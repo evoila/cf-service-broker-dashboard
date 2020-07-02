@@ -3,6 +3,7 @@ import * as fromBindings from '../reducers/binding.reducer';
 import { SharedModuleState, getSharedModuleState } from '../reducers/index';
 import { ServiceBrokerServiceBinding, SpaceAndOrg } from 'app/monitoring/model/service-broker-service-binding';
 import { ManagementPortalServiceBinding, PartnerAndCustomer } from 'app/monitoring/model/management-portal-service-binding';
+import { BindingTypes, ServiceBinding } from '../../../model/service-binding';
 /*
  * Binding State
  */
@@ -38,34 +39,37 @@ export const getBindingsLoadingState = createSelector(
 );
 
 
-// Returns a Single Space and Org object for ServiceBroker Bindings
-export const getServiceBrokerBindingsSpaceAndOrg = createSelector(
+
+export const getBindingsAuthMetadata = createSelector(
   getAllBindingsEntities,
-  (entities: Array<ServiceBrokerServiceBinding>) => {
-    return entities.length == 0 ? { space: "", org: "" } : entities
-      .map(entity => {
+  (entities: Array<ServiceBinding>) => {
+    if (entities.length == 0) {
+
+      return { space: "", org: "" }
+
+    } else {
+      let entity: any = entities[0];
+      if (entity.type == BindingTypes.SERVICEBROKER) {
+
+        entity = entity as ServiceBrokerServiceBinding;
         return {
           org: entity.authScope.orgId,
           space: entity.space
         } as SpaceAndOrg;
-      })
-      .reduce(k => k) as SpaceAndOrg;
-  }
-);
 
-// Returns a Single Partner and Customer object for Managementportal Bindings
-export const getManagementPortalBindingsPartnerAndCustomer = createSelector(
-  getAllBindingsEntities,
-  (entities: Array<ManagementPortalServiceBinding>) => {
-    return entities.length == 0 ? { partner: "", customer: "" } : entities
-      .map(entity => {
+      } else {
+
+        entity = entity as ManagementPortalServiceBinding;
         return {
           partner: entity.partner,
           customer: entity.customer
         } as PartnerAndCustomer;
-      })
-      .reduce(k => k) as PartnerAndCustomer;
+
+      }
+    }
   }
-);
+)
+
+
 
 
