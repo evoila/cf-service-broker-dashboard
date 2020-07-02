@@ -11,7 +11,7 @@ import { getAllAggregationEntities } from '../../store/selectors/aggregation.sel
 import { ChartIncreationState } from '../../store/reducers/chart.increation.reducer';
 import { Observable } from 'rxjs';
 import { Aggregation } from '../../model/aggregation';
-import { CfAuthParameterService } from '../../../shared/services/cfauth-param.service';
+import { AuthParameterService } from '../../../shared/services/auth-param.service';
 import {
   getChartIncreationType,
   getReadyForRequestAggregations
@@ -61,7 +61,7 @@ export class AddDataComponent implements OnInit {
   private options: ChartOptionsEntity;
   private chartIncAgg: { [id: string]: AggregationRequestObject };
   private name: string;
-  private authParamService: CfAuthParameterService;
+  private authParamService: AuthParameterService;
 
   private previousFinishedAggs: { [id: string]: AggregationRequestObject } = {};
 
@@ -69,7 +69,7 @@ export class AddDataComponent implements OnInit {
     private aggregationStore: Store<AggregationState>,
     private chartStore: Store<ChartIncreationState>,
     storeBindings: Store<BindingsState>,
-    authParamService: CfAuthParameterService,
+    authParamService: AuthParameterService,
     private chartModelStore: Store<ChartModelState>,
     private router: Router
   ) {
@@ -88,7 +88,7 @@ export class AddDataComponent implements OnInit {
     }
 
     this.authParamService
-      .createCfAuthScope()
+      .createAuthScope()
       .pipe(take(1))
       .subscribe(authScope => {
         let scopedAggregation = {

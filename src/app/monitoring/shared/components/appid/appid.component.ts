@@ -70,13 +70,5 @@ export class AppidComponent implements OnInit {
   public setChoosen() {
     this.app.next(this.serviceBindings!![this.choosen]);
   }
-  public fallBackTextFieldUpdate() {
-    if (this.fallBackAppName && this.fallBackSpace) {
-      const fallBackBinding = {
-        appName: this.fallBackAppName,
-        space: this.fallBackSpace
-      } as ServiceBinding;
-      this.app.next(fallBackBinding);
-    }
-  }
+  
 }

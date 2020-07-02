@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 import { CfAuthScope } from '../../../chart-configurator/model/cfAuthScope';
 import { Panel } from '../../../shared/model/panel';
 import { PanelElement } from 'app/monitoring/shared/model/panel-element';
+import { AuthScope } from 'app/monitoring/chart-configurator/model/authScope';
 
 export const ADD_ELEMENT_TO_PANEL = '[Panel Configurator] Add Element to Panel';
 export const DELETE_ELEMENT_IN_PANEL =
@@ -36,8 +37,8 @@ export class FlushState implements Action {
   readonly type = FLUSH_STATE;
 }
 export class SetAuthScope implements Action {
-  readonly type = SET_AUTH_SCOPE;
-  constructor(public payload: CfAuthScope) { }
+   readonly type = SET_AUTH_SCOPE;
+  constructor(public payload: AuthScope) { }
 }
 export class SetStateForUpdate implements Action {
   readonly type = SET_STATE_FOR_UPDATE;

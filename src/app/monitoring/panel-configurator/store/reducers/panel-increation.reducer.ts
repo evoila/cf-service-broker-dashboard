@@ -5,6 +5,7 @@ import { ChartInPanel } from '../../../model/chart-in-panel';
 import { PanelElement } from 'app/monitoring/shared/model/panel-element';
 import { element } from 'protractor';
 import { TableInPanel } from 'app/monitoring/model/table-in-panel';
+import { AuthScope } from 'app/monitoring/chart-configurator/model/authScope';
 
 
 export interface PanelIncreationState {
@@ -12,7 +13,7 @@ export interface PanelIncreationState {
   elements: { [id: string]: PanelElement };
   name: string;
   description: string;
-  authScope: CfAuthScope;
+  authScope: AuthScope;
   onEdit: boolean;
 }
 export const initialState: PanelIncreationState = {

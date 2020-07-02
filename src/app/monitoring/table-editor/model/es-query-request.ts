@@ -1,17 +1,18 @@
-import { CfAuthScope } from "app/monitoring/chart-configurator/model/cfAuthScope"
+
 import { RawQuery } from "./raw-query";
 import { ESQuery } from "./es-query";
+import { AuthScope } from "app/monitoring/chart-configurator/model/authScope";
 
 
 export class ESQuery_Request{
 
     public appId: string;
     public size: number;
-    public authScope: CfAuthScope;
+    public authScope: AuthScope;
     public query: ESQuery;
     public from: number;
 
-    public constructor(appId: string, size: number, authScope: CfAuthScope, query: ESQuery) { 
+    public constructor(appId: string, size: number, authScope: AuthScope, query: ESQuery) { 
 
         this.appId = appId;
         this.size = size;

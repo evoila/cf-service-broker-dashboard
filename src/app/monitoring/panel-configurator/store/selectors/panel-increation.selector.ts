@@ -9,6 +9,8 @@ import { Chart } from '../../../shared/model/chart';
 import { ChartInPanel } from '../../../model/chart-in-panel';
 import { PanelElement } from 'app/monitoring/shared/model/panel-element';
 import { TableInPanel } from 'app/monitoring/model/table-in-panel';
+import { CfAuthScope } from 'app/monitoring/chart-configurator/model/cfAuthScope';
+import { KcAuthScope } from 'app/monitoring/chart-configurator/model/kcAuthScope';
 
 export const getPanelIncreationState = createSelector(
   getPanelState,
@@ -50,8 +52,9 @@ export const buildFunctionalPanel = createSelector<
 export const panelReadyForBuild = createSelector(
   getPanelIncreationState,
   state =>
-    state.authScope.orgId &&
-    state.authScope.spaceId &&
+    ((state.authScope as CfAuthScope).orgId &&
+    (state.authScope as CfAuthScope).spaceId) || ((state.authScope as KcAuthScope).customerId &&
+    (state.authScope as KcAuthScope).partnerId) &&
     !!state.name
 );
 

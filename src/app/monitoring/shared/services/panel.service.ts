@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EndpointService } from './endpoint.service';
-import { CfAuthParameterService } from './cfauth-param.service';
+import { AuthParameterService } from './auth-param.service';
 import { Store } from '@ngrx/store';
 import { BindingsState } from '../store/reducers/binding.reducer';
 import { Observable } from 'rxjs';
@@ -11,12 +11,12 @@ import { Panel } from '../model/panel';
 @Injectable()
 export class PanelService {
   private readonly url: string;
-  private cfAuthParams: CfAuthParameterService;
+  private cfAuthParams: AuthParameterService;
 
   constructor(
     private http: HttpClient,
     endpoint: EndpointService,
-    cfAuthParams: CfAuthParameterService,
+    cfAuthParams: AuthParameterService,
     storeBindings: Store<BindingsState>
   ) {
     this.cfAuthParams = cfAuthParams.construct(storeBindings);
@@ -24,7 +24,7 @@ export class PanelService {
   }
 
   public getAllCharts(): Observable<Array<Panel>> {
-    return this.cfAuthParams.createCfAuthParameters().pipe(
+    return this.cfAuthParams.createAuthParameters().pipe(
       flatMap(params => {
         return this.http.get<Array<Panel>>(this.url, { params });
       })

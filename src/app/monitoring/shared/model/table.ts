@@ -3,13 +3,13 @@ import { TableOptions } from '../../table-editor/model/table-options-entity'
 import { ColumnDefinition } from 'app/monitoring/table-editor/model/column-definition';
 import { ESQuery_Request } from 'app/monitoring/table-editor/model/es-query-request';
 import { AggregationRequestObject } from 'app/monitoring/chart-configurator/model/aggregationRequestObject';
-import { PanelElement } from './panel-element';
+import { AuthScope } from 'app/monitoring/chart-configurator/model/authScope';
 
 export class Table{
 readonly id?: string;
 title: string;
 queries: Array<ESQuery_Request>;
-authScope: CfAuthScope;
+authScope: AuthScope;
 columns: Array<ColumnDefinition>;
 options: TableOptions;
 aggregations: Array<AggregationRequestObject>;

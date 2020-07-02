@@ -6,7 +6,7 @@ import { AggregationRequestObject } from 'app/monitoring/chart-configurator/mode
 import { Store } from '@ngrx/store';
 import { ChartIncreationState } from 'app/monitoring/chart-configurator/store/reducers/chart.increation.reducer';
 import { getChartIncreationAggregations, DeleteChartAggregations, SetChartAggregations, EditAggregation } from 'app/monitoring/chart-configurator/store';
-import { CfAuthParameterService } from 'app/monitoring/shared/services/cfauth-param.service';
+import { AuthParameterService } from 'app/monitoring/shared/services/auth-param.service';
 import { BindingsState } from 'app/monitoring/shared/store/reducers/binding.reducer';
 import { take, filter } from 'rxjs/operators';
 
@@ -26,11 +26,11 @@ export class DataListComponent implements OnInit {
 
   entries: { [id: string]: AggregationRequestObject };
 
-  authParamService: CfAuthParameterService;
+  authParamService: AuthParameterService;
 
   constructor(
     private store: Store<ChartIncreationState>,
-    authParamService: CfAuthParameterService,
+    authParamService: AuthParameterService,
     storeBindings: Store<BindingsState>
   ) {
     this.authParamService = authParamService.construct(storeBindings);
@@ -49,7 +49,7 @@ export class DataListComponent implements OnInit {
   pushAggregation(aggregation: Aggregation, id: string) {
 
     this.authParamService
-      .createCfAuthScope()
+      .createAuthScope()
       .pipe(take(1))
       .subscribe(authScope => {
         const aggregationRq = {

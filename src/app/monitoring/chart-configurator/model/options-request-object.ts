@@ -1,7 +1,7 @@
+import { AuthScope } from "./authScope";
+
 export class OptionsRequestObject {
-  public org: string;
-  public space: string;
-  public serviceInstanceId: string;
+  public authScope: AuthScope;
   public chartType: string;
-  constructor(org: string, space: string, serviceInstanceId: string) {}
+  constructor(authScope: AuthScope) {}
 }

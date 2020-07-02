@@ -13,6 +13,7 @@ import { TimeService } from '../../shared/services/time.service';
 import { ShortcutService } from '../../../core/services/shortcut.service';
 import { LogFilterComponent } from '../../components/log-messages/log-filter/log-filter.component';
 import { HighlightingAndHits } from '../../components/log-messages/log-list/log-list.component';
+import { authScopeFromBinding } from 'app/monitoring/chart-configurator/model/cfAuthScope';
 
 @Component({
   selector: 'sb-explore-logs',
@@ -155,8 +156,7 @@ export class ExploreLogsComponent implements OnInit, OnDestroy {
 
     let searchRequest = {
       appName: this.scope.appName,
-      space: this.scope.space,
-      orgId: this.scope.organization_guid,
+      authScope: authScopeFromBinding(this.scope as ServiceBinding),
       filter: this.filter,
       docSize: {
         from,
