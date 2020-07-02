@@ -7,11 +7,11 @@ export interface ServiceBinding {
   authScope: AuthScope;
   timestamp: Number;
   deprecated: boolean;
-  type: BindingTypes; // 'servicebroker' or 'managementportal'
+  type: BindingTypeIdentifier; // 'servicebroker' or 'managementportal'
 
 }
 
-export enum BindingTypes {
+export enum BindingTypeIdentifier {
   SERVICEBROKER = 'servicebroker',
   MANAGEMENTPORTAL = 'managementportal'
 }

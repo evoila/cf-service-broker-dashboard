@@ -16,8 +16,12 @@ import {
 import { of } from 'rxjs/internal/observable/of';
 import { Store } from '@ngrx/store';
 
-import { getServiceBrokerBindingsSpaceAndOrg} from '../../../shared/store/selectors/bindings.selector';
+import { getBindingsAuthMetadata} from '../../../shared/store/selectors/bindings.selector';
 import { CfAuthScope } from '../../model/cfAuthScope';
+import { BindingTypeIdentifier } from 'app/monitoring/model/service-binding';
+import { ServiceBrokerServiceBinding, SpaceAndOrg } from 'app/monitoring/model/service-broker-service-binding';
+import { KcAuthScope } from '../../model/kcAuthScope';
+import { PartnerAndCustomer } from 'app/monitoring/model/management-portal-service-binding';
 
 
 @Injectable()
@@ -40,13 +44,18 @@ export class OptionsEffects {
   @Effect()
   loadOptions$ = this.actions.pipe(ofType(optionActions.LOAD_OPTIONS),
     switchMap((chartType: optionActions.LoadOptions) => {
-      return this.optionsStore.select(getServiceBrokerBindingsSpaceAndOrg).pipe(
+      return this.optionsStore.select(getBindingsAuthMetadata).pipe(
         take(1),
-        switchMap(bindings => {
+        switchMap(bindingsMeta => {
           
-          (this.request.authScope as CfAuthScope).spaceId = bindings.space;
-          (this.request.authScope as CfAuthScope).orgId = bindings.org;
-
+          if(bindingsMeta.type == BindingTypeIdentifier.SERVICEBROKER){
+            (this.request.authScope as CfAuthScope).spaceId = (bindingsMeta as SpaceAndOrg).space;
+            (this.request.authScope as CfAuthScope).orgId = (bindingsMeta as SpaceAndOrg).org;
+          }
+          else if(bindingsMeta.type == BindingTypeIdentifier.MANAGEMENTPORTAL){
+            (this.request.authScope as KcAuthScope).partnerId = (bindingsMeta as PartnerAndCustomer).partner;
+            (this.request.authScope as KcAuthScope).customerId = (bindingsMeta as PartnerAndCustomer).customer;
+          }
           this.request.chartType = chartType.payload;
           return this.optionService.getOptions(this.request).pipe(
             map(options => new LoadOptionsSuccess(options)),

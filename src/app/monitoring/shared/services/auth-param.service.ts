@@ -3,9 +3,8 @@ import { Store } from '@ngrx/store';
 import { filter, switchMap, map, take } from 'rxjs/operators';
 import {
   getAllBindingsLoaded,
-  getServiceBrokerBindingsSpaceAndOrg,
   getAllBindingsEntities,
-  getManagementPortalBindingsPartnerAndCustomer
+  getBindingsAuthMetadata
 } from '../store/selectors/bindings.selector';
 
 import { SpaceAndOrg } from 'app/monitoring/model/service-broker-service-binding';
@@ -22,12 +21,12 @@ import { getBindingsLoadingState } from '../store/selectors/bindings.selector';
 import { timer } from 'rxjs';
 import { AuthScope } from 'app/monitoring/chart-configurator/model/authScope';
 import { KcAuthScope } from 'app/monitoring/chart-configurator/model/kcAuthScope';
-import { BindingSpecials } from 'app/monitoring/model/service-binding';
+import { BindingAuthMetadata } from 'app/monitoring/model/service-binding';
 import { PartnerAndCustomer } from 'app/monitoring/model/management-portal-service-binding';
 
 @Injectable({ providedIn: ChartConfiguratorModule })
 export class AuthParameterService {
-  private bindingSpecials$: Observable<BindingSpecials>;
+  private bindingSpecials$: Observable<BindingAuthMetadata>;
   private store: Store<BindingsState>;
 
 
@@ -41,7 +40,11 @@ export class AuthParameterService {
 
   public createAuthScope(): Observable<AuthScope> {
     const { serviceInstanceId } = environment;
-    const type = this.getBindingType() == 'servicebroker' ? 'cf' : 'kc';
+    var type = "";
+    const subscr$ = this.getBindingType().pipe(take(1)).subscribe(k => {
+      type = k.type == 'servicebroker' ? 'cf' : 'kc';
+    });
+    subscr$.unsubscribe();
     if (type == 'cf'){
       return this.bindingSpecials$.pipe(
         map(orgAndSpace => {
@@ -69,7 +72,7 @@ export class AuthParameterService {
     else{
       // Throw Error here!
       return new Observable<AuthScope>()
-    }
+    }    
     
     
   }
@@ -104,51 +107,32 @@ OLD LOGIC OF CONSTRUCT METHOD ONLY SUITABLE FOR CF SERVICEBROKER BINDINGS
     to access the store and retrieve data */
     if (!this.store) {
       this.store = store;
-      store.select(getBindingsLoadingState).pipe(
+      this.bindingSpecials$ = store.select(getBindingsLoadingState).pipe(
         filter(state => {
           // dispatch Event if
           !state.loaded &&
             !state.loading &&
             timer(8000).subscribe(k => this.store.dispatch(new LoadBindings()));
           return state.loaded == true;
-        })).subscribe(k => {
-          // BindingsState is -loaded- here
-          // go get the bindings array:
-          store.select(getAllBindingsEntities).pipe(take(1)).subscribe(bindings => {
-            if(bindings.length > 0 ){
-              if (bindings[0].type == "servicebroker"){
-                this.bindingSpecials$ = store.select(getServiceBrokerBindingsSpaceAndOrg);
-              }
-              else if (bindings[0].type == "managementportal"){
-                this.bindingSpecials$ = store.select(getManagementPortalBindingsPartnerAndCustomer);
-              }
-            }
-          });
-        });
-      }
-      return this;
+        }), switchMap(k => store.select(getBindingsAuthMetadata))
+      );
+    }
+    return this;
   }
 
-  getBindingType() : string{
+  getBindingType() : Observable<BindingAuthMetadata>{
     
-    this.store.select(getBindingsLoadingState).pipe(
+    return this.store.select(getBindingsLoadingState).pipe(
      filter(state => {
        // dispatch Event if
        !state.loaded &&
          !state.loading &&
-         timer(8000).subscribe(k => this.store.dispatch(new LoadBindings()));
-       return state.loaded == true;
-     })).subscribe(k => {
-       // BindingsState is -loaded- here
-       // go get the bindings array:
-       this.store.select(getAllBindingsEntities).pipe(take(1)).subscribe(bindings => {
-         if(bindings.length > 0 ){
-           return bindings[0].type;
-         }
-         return "";
-       });
-     });
-   return "";
+          timer(8000).subscribe(k => this.store.dispatch(new LoadBindings()));
+        return state.loaded == true;
+      }), switchMap(k => this.store.select(getBindingsAuthMetadata))
+     );
+    
+     
 }
 
 
