@@ -55,18 +55,18 @@ const monacoEditorConfig: NgxMonacoEditorConfig = {
 
 export const bootstrapDeps = [
   fromBootstrap.NgbTabsetModule,
-  fromBootstrap.NgbDropdownModule.forRoot(),
-  fromBootstrap.NgbCollapseModule.forRoot(),
-  fromBootstrap.NgbTooltipModule.forRoot(),
-  fromBootstrap.NgbModalModule.forRoot(),
-  fromBootstrap.NgbPopoverModule.forRoot(),
-  fromBootstrap.NgbTabsetModule.forRoot(),
-  fromBootstrap.NgbPaginationModule.forRoot(),
-  fromBootstrap.NgbButtonsModule.forRoot(),
-  fromBootstrap.NgbAccordionModule.forRoot(),
-  fromBootstrap.NgbAlertModule.forRoot(),
-  fromBootstrap.NgbDatepickerModule.forRoot(),
-  fromBootstrap.NgbTimepickerModule.forRoot()
+  fromBootstrap.NgbDropdownModule,
+  fromBootstrap.NgbCollapseModule,
+  fromBootstrap.NgbTooltipModule,
+  fromBootstrap.NgbModalModule,
+  fromBootstrap.NgbPopoverModule,
+  fromBootstrap.NgbTabsetModule,
+  fromBootstrap.NgbPaginationModule,
+  fromBootstrap.NgbButtonsModule,
+  fromBootstrap.NgbAccordionModule,
+  fromBootstrap.NgbAlertModule,
+  fromBootstrap.NgbDatepickerModule,
+  fromBootstrap.NgbTimepickerModule
 ];
 
 @NgModule({

@@ -37,15 +37,15 @@ export function buildBuildTargetService(): BuildTargetService {
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
-    monShared.SharedModule.forRoot(),
+    monShared.SharedModule,
 
-    NgbDropdownModule.forRoot(),
-    NgbCollapseModule.forRoot(),
-    NgbTooltipModule.forRoot(),
-    NgbModalModule.forRoot(),
-    NgbPopoverModule.forRoot(),
-    NgbTypeaheadModule.forRoot(),
-    NgbTabsetModule.forRoot(),
+    NgbDropdownModule,
+    NgbCollapseModule,
+    NgbTooltipModule,
+    NgbModalModule,
+    NgbPopoverModule,
+    NgbTypeaheadModule,
+    NgbTabsetModule,
     CoreModule.forRoot(),
     SharedModule,
 
@@ -63,4 +63,4 @@ export function buildBuildTargetService(): BuildTargetService {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
