@@ -1,14 +1,10 @@
 import { Injectable, Pipe } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ChartResponse } from '../model/chart-response';
 import { EsChartRequest } from '../model/es-chart-request';
 import { Chart } from '../model/chart';
 import { EndpointService } from '../shared/services/endpoint.service';
-import { ChartRequest } from '../model/chart-request';
-import { PrometheusChartRequest } from '../model/prom-chart-request';
-import { NotificationType, NotificationService, Notification } from 'app/core';
-import { JsonPipe } from '@angular/common/';
+import { NotificationService } from 'app/core';
 import { ErrorserviceService } from 'app/monitoring/shared/services/errorservice.service';
 import { catchError, map } from 'rxjs/internal/operators';
 
@@ -22,7 +18,7 @@ export class EschartsService {
     private endpointService: EndpointService,
     private notification: NotificationService,
     private errorService: ErrorserviceService
-  ) {}
+  ) { }
   public getCharts(chartRequest: EsChartRequest): Observable<Array<Chart>> {
     const uri: string = this.endpointService.getUri() + this.endpoint;
     return this.http

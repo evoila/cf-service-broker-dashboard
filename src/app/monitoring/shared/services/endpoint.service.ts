@@ -3,7 +3,7 @@ import { HttpHeaders } from "@angular/common/http";
 import { environment } from "environments/runtime-environment";
 import { CustomEndpointService } from "app/core/custom-endpoint.service";
 
-@Injectable()
+@Injectable({ providedIn: "root" })
 export class EndpointService extends CustomEndpointService {
   private readonly prefix = "/v1";
   // private baseUrl = 'http://localhost';

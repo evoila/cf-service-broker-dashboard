@@ -79,7 +79,7 @@ export const bootstrapDeps = [
     MonacoEditorModule.forRoot(monacoEditorConfig),
     CoreModule,
     DragDropModule,
-    SharedModule,
+    SharedModule.forRoot(),
     ChartConfiguratorModule,
     TableEditorModule,
     StoreModule.forRoot(reducers, { metaReducers }),
