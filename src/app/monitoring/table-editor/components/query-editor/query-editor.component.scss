@@ -1,5 +1,19 @@
 @import '../../../../core/core';
 
+#index_viewer{
+
+
+}
+
+#index_p{
+
+
+}
+
+#query_creation_div{
+    
+}
+
 
 .query-editor-frame{
 
@@ -13,6 +27,11 @@
 }
 
 .btn.btn-primary.save_q{
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.btn.btn-primary.test_q{
     margin: 10px;
     border-radius: 10px;
 }
