@@ -2,9 +2,11 @@
     Wählen Sie den Namen Ihrer Applikation</label> -->
 
 <div class="box">
-    <select *ngIf="serviceBindings" class="custom-select mr-sm-2 appName" [(ngModel)]="choosen" name="..."
-    (change)="setChoosen()" [ngClass]="this.serviceBindings!![this.choosen].deprecated ? 'chosen-depr': 'chosen-alive'">
-        <option selected *ngFor="let app of serviceBindings; let i = index" [value]="i">{{app.appName + (app.deprecated ? " (unbound)" : "")}}</option>
+    <select *ngIf="serviceBindings && serviceBindings.length" class="custom-select mr-sm-2 appName"
+        [(ngModel)]="choosen" name="..." (change)="setChoosen()"
+        [ngClass]="this.serviceBindings!![this.choosen].deprecated ? 'chosen-depr': 'chosen-alive'">
+        <option selected *ngFor="let app of serviceBindings; let i = index" [value]="i">
+            {{app.appName + (app.deprecated ? " (unbound)" : "")}}</option>
     </select>
     <label id="applabel">app:</label>
 </div>
