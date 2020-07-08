@@ -11,7 +11,7 @@ title: string;
 queries: Array<ESQuery_Request>;
 authScope: AuthScope;
 columns: Array<ColumnDefinition>;
-options: TableOptions;
+options?: TableOptions;
 aggregations: Array<AggregationRequestObject>;
 
  
@@ -22,7 +22,7 @@ public constructor(title: string, columns: Array<ColumnDefinition>, queries: Arr
     this.queries = queries;
     this.authScope = queries[0].authScope;
     this.columns = columns;
-    this.options = new TableOptions();
+    //this.options = new TableOptions();
     this.aggregations = Array<AggregationRequestObject>();
     
 }
