@@ -30,9 +30,11 @@ export class OptionsService {
   public getOptions(
     request: OptionsRequestObject
   ): Observable<Array<ChartOptionsEntity>> {
-    const params = this.privateHttpGetParams.convertParams(request);
+    
+    const params = this.privateHttpGetParams.convertParams({...{chartType: request.chartType }, ...request.authScope});
+    console.log(params);
     const httpOptions = Object.assign({ params: params }, this.httpOptions);
-
+    console.log(httpOptions);
     return this.http
       .get<Array<ChartOptionsEntity>>(this.url, httpOptions)
       .pipe(catchError(err => this.errorService.handleErrors(err)));

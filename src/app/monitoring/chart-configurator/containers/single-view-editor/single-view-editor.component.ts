@@ -27,6 +27,7 @@ import { getOptionsState } from '../../store/selectors/options.selector';
 import { SetChartName } from '../../store/actions/chart.increation.action';
 import { SetTitle } from '../../store';
 import { ChartOptionsEntity } from '../../model/chart-options-entity';
+import { AuthScope } from '../../model/authScope';
 
 @Component({
   selector: 'sb-single-view-editor',
@@ -120,9 +121,10 @@ export class SingleViewEditorComponent implements OnInit {
           return Object.keys(k).length > 0 && k.name && k.type;
         }),
         switchMap((chart: Chart) => {
+          console.log('this ?');
           return this.authParamService.createAuthScope().pipe(
             take(1),
-            map((authScope: CfAuthScope) => {
+            map((authScope: AuthScope) => {
               return { ...chart, authScope };
             }),
             map((chart: Chart) =>

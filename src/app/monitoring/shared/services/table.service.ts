@@ -16,9 +16,9 @@ export class TableService {
     private http: HttpClient,
     private endpoint: EndpointService,
     storeBindings: Store<BindingsState>,
-    cfAuthParams: AuthParameterService
+    authParams: AuthParameterService
   ) {
-    this.authParams = cfAuthParams.construct(storeBindings);
+    this.authParams = authParams.construct(storeBindings);
     this.url = `${endpoint.getUri()}/tables`;
   }
 

@@ -39,6 +39,7 @@ export class AuthParameterService {
   }
 
   public createAuthScope(): Observable<AuthScope> {
+    
     const { serviceInstanceId } = environment;
     var type = "";
     const subscr$ = this.getBindingType().pipe(take(1)).subscribe(k => {
@@ -46,6 +47,7 @@ export class AuthParameterService {
     });
     subscr$.unsubscribe();
     if (type == 'cf'){
+      //console.log('makin cf scope..');
       return this.bindingSpecials$.pipe(
         map(orgAndSpace => {
           return {
@@ -58,6 +60,7 @@ export class AuthParameterService {
       );
     }
     else if (type == 'kc'){
+      //console.log('makin kc scope..');
       return this.bindingSpecials$.pipe(
         map(partAndCust => {
           return {

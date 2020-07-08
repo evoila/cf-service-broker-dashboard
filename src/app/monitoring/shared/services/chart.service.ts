@@ -11,20 +11,21 @@ import { BindingsState } from '../store/reducers/binding.reducer';
 @Injectable()
 export class ChartService {
   private readonly url: string;
-  private cfAuthParams: AuthParameterService;
+  private authParams: AuthParameterService;
   constructor(
     private http: HttpClient,
     endpoint: EndpointService,
     storeBindings: Store<BindingsState>,
-    cfAuthParams: AuthParameterService
+    authParams: AuthParameterService
   ) {
-    this.cfAuthParams = cfAuthParams.construct(storeBindings);
+    this.authParams = authParams.construct(storeBindings);
     this.url = `${endpoint.getUri()}/charting/charts`;
   }
 
   public getAllCharts(): Observable<Array<Chart>> {
-    return this.cfAuthParams.createAuthParameters().pipe(
+    return this.authParams.createAuthParameters().pipe(
       flatMap(params => {
+        
         return this.http.get<Array<Chart>>(this.url, { params });
       })
     );
@@ -35,7 +36,7 @@ export class ChartService {
 
   public deleteChart(chartId: string): Observable<Chart> {
     const customUri = `${this.url}/${chartId}`;
-    return this.cfAuthParams.createAuthParameters().pipe(
+    return this.authParams.createAuthParameters().pipe(
       flatMap(params => {
         return this.http.delete<Chart>(customUri, {params});
       })

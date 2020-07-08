@@ -13,6 +13,7 @@ export interface CfAuthScope extends AuthScope {
 
 export function authScopeFromBinding(binding: ServiceBinding): AuthScope {
   //binding.organization_guid
+
   if (binding.type == 'servicebroker'){
     return  binding.authScope as CfAuthScope;
   }

@@ -30,6 +30,13 @@ export class OptionsEffects {
   private readonly mockedSpace = 'servicebroker-dev';
   private readonly mockedOrg = 'a6cec6a0-f163-4601-a573-484c9743bfa6';
   
+  private kcMockedAuthScope = {
+      type: 'kc',
+      serviceInstanceId: environment.serviceInstanceId,
+      partnerId: this.mockedOrg,
+      customerId: this.mockedSpace
+  }
+  
   private request = {
     chartType: '',
     authScope: {
@@ -48,13 +55,14 @@ export class OptionsEffects {
         take(1),
         switchMap(bindingsMeta => {
           
-          if(bindingsMeta.type == BindingTypeIdentifier.SERVICEBROKER){
-            (this.request.authScope as CfAuthScope).spaceId = (bindingsMeta as SpaceAndOrg).space;
-            (this.request.authScope as CfAuthScope).orgId = (bindingsMeta as SpaceAndOrg).org;
+          if(bindingsMeta.type === BindingTypeIdentifier.SERVICEBROKER){
+            const cfMeta = (bindingsMeta as SpaceAndOrg);
+            (this.request.authScope as CfAuthScope).spaceId = cfMeta.space;
+            (this.request.authScope as CfAuthScope).orgId = cfMeta.org;
           }
-          else if(bindingsMeta.type == BindingTypeIdentifier.MANAGEMENTPORTAL){
-            (this.request.authScope as KcAuthScope).partnerId = (bindingsMeta as PartnerAndCustomer).partner;
-            (this.request.authScope as KcAuthScope).customerId = (bindingsMeta as PartnerAndCustomer).customer;
+          else if(bindingsMeta.type === BindingTypeIdentifier.MANAGEMENTPORTAL){
+            const kcMeta = (bindingsMeta as PartnerAndCustomer);
+            (this.request.authScope as KcAuthScope) = { ...this.kcMockedAuthScope, partnerId: kcMeta.partner, customerId: kcMeta.customer }
           }
           this.request.chartType = chartType.payload;
           return this.optionService.getOptions(this.request).pipe(
