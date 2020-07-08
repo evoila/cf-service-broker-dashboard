@@ -83,7 +83,6 @@ export class BaseQueryInputComponent implements OnInit {
  
   test_query_with_binding(query: ESQuery, binding: ServiceBinding){
   
-    
     this.store.dispatch(new RunQuery(query, binding));
     this.store.select(getQueriesState).pipe(filter(k => !k.queries.running)).pipe(take(1)).subscribe(k => {
       var esbq_run_result = k.queries.run_result;

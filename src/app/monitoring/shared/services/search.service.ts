@@ -141,11 +141,13 @@ export class SearchService {
 
   public getMappingWithType(): Observable<Map<string, Array<Field>>> {
     const endpoint = this.endpoint.getUri() + "/mappings";
+   
     return this.http.get(endpoint, this.httpOptions).pipe(
       map((dataAsObject: Map<string, any>) => {
         const returnVal = new Map<string, Array<Field>>();
         const datas = new Map<string, any>(Object.entries(dataAsObject));
         datas.forEach((data, key) => {
+          
           Object.keys(data["mappings"]["_doc"]["properties"]).forEach(item => {
             const property = data["mappings"]["_doc"]["properties"][item];
             returnVal[key] = returnVal[key]

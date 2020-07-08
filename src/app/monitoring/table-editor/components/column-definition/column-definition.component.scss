@@ -12,6 +12,8 @@
     width: 100%;
     margin: 1em;
     max-height: 30em;
+    display: inline-flex;
+
 }
 
 #definition-div{
@@ -100,11 +102,13 @@
 }
 
 .mat-icon-rtl-mirror.expand-button{
-    color: $primary-color;
+    font-size: 11pt;
+    color: #3598f5;
     border: 2px solid #e8e8e8;
     border-radius: 18px;
     line-height: 19px;
     margin: 2px;
+    line-height: initial;
 }
 
 .mat-icon-rtl-mirror.expand-button:hover{

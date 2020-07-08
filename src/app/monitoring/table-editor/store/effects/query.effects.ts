@@ -47,8 +47,11 @@ export class ESQueriesEffect {
     switchMap((action: queryAction.RunQuery) => {
       const authScope = authScopeFromBinding(action.scope);
       const boolQueryRequest = new ESQuery_Request(action.scope.appId, 10, authScope, action.payload);
+      // HARDCODED QUERY INDEX FOR MATCHALL TESTQUERY
+      boolQueryRequest.index = "2020-07-08-jobs";
+
       return this.searchService.run(boolQueryRequest).pipe(
-        map(bool_query_result => new queryAction.RunQuerySuccess(this.addQueryId(bool_query_result, action.payload.id), boolQueryRequest)),
+        map(bool_query_result => new queryAction.RunQuerySuccess(this.addQueryId(bool_query_result, action.payload.id!!), boolQueryRequest)),
         catchError(error => of(new queryAction.RunQueryFail(error)))
       );
     })

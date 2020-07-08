@@ -1,18 +1,5 @@
 
-    /*
-  {
-    "should": [],
-    "filter": [],
-    "mustNot": [],
-    "must": [
-      {
-        "match": {
-          "_index": "*-logmessages"
-        }
-      }
-    ]
-  } 
-  */    
+// "*-logmessages"
 
 
 // this component is the full page container offering the Possibility to create a valid es Query
@@ -54,7 +41,8 @@ export class QueryEditorComponent implements OnInit {
   query_test_result_hint = "";
   es_bool_query_text_area_must: string = "{'match' : { '_index' : '*-logmessages'} }";
 
-  public fields$: Observable<Map<string, Array<Field>>>;
+  public fields: Map<string, Array<Field>>;
+  public mappings: any = "";
   
   //fetched_indexes: Array<string>;
 
@@ -63,7 +51,18 @@ export class QueryEditorComponent implements OnInit {
 
   ngOnInit() {
 
-    this.fields$ = this.searchService.getMappingWithType();
+    var subscr$ = this.searchService.getMappings().subscribe(
+      data => {
+        // since this is a Log-Specific Feature we alwys want the definition of the log-Type
+        subscr$.unsubscribe();
+        this.fields = data;
+        this.mappings = this.mapToJson(this.fields);
+      },
+      error => {
+        // TODO: Error-Handling here
+        subscr$.unsubscribe();
+      }
+    );;
 
   }
 
@@ -121,6 +120,8 @@ export class QueryEditorComponent implements OnInit {
 
   
 
-
+  mapToJson(map) {
+    return JSON.stringify(map);
+  }
 
 }
