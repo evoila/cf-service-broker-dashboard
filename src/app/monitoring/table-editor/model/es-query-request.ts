@@ -11,6 +11,7 @@ export class ESQuery_Request{
     public authScope: AuthScope;
     public query: ESQuery;
     public from: number;
+    public index?: string;
 
     public constructor(appId: string, size: number, authScope: AuthScope, query: ESQuery) { 
 
@@ -19,13 +20,12 @@ export class ESQuery_Request{
         this.authScope = authScope;
         this.query = query;
         this.from = 0;
+        this.index = "";
       }
     
       jsonify(){
         return JSON.stringify(this);
       }
     
-    
-
     
 }
