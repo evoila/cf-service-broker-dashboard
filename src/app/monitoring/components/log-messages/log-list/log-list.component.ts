@@ -62,7 +62,7 @@ export class LogListComponent implements OnInit, OnDestroy {
       })).subscribe((data: [Array<LogDataModel>, monaco.Range?, number?]) => {
         this.code = '';
         this.data = data;
-        if (this.data[0]) {
+        if (this.data && this.data[0]) {
           this.data[0].forEach(hit => {
             if (this.monacoFieldSelection === "COMPLETEOBJECT") {
               this.code += JSON.stringify(hit._source) + '\n';
