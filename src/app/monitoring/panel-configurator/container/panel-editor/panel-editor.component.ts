@@ -48,10 +48,10 @@ export class PanelEditorComponent implements OnInit {
     private panelModelStore: Store<PanelState>,
     private router: Router,
     private bindingStore: Store<BindingsState>,
-    cfAuthParams: AuthParameterService,
+    authParams: AuthParameterService,
     private shortcut: ShortcutService
   ) {
-    this.authParams = cfAuthParams.construct(bindingStore);
+    this.authParams = authParams.construct(bindingStore);
   }
 
   ngOnInit() {

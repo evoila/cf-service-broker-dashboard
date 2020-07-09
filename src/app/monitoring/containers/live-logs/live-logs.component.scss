@@ -17,7 +17,10 @@
     align-self: start;
     cursor: pointer;
 }
-
+.es-index-select{
+    cursor: pointer;
+    margin: 0px 5px 5px 0px ;
+}
 
 .btn.btn-danger {  //start button when acting as stop button
     height: 2.4em;

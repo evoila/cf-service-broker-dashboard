@@ -11,7 +11,7 @@ if (!injectedEnv) {
   );
   seedEnv = {
     serviceInstanceId: '73047820-8d36-4323-bf2b-77dc887a707e',
-    token: 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJQOG5VNGpDdDM0UXhqenExdXNhMXItZjVXb2VWeWp3SXo1RTZLQUxzN2FFIn0.eyJleHAiOjE1OTQzMTk4MTEsImlhdCI6MTU5NDIzMzQxMSwianRpIjoiYzM2YTY4MGEtMDVlNC00MDgzLTg1YTUtMTJjODVlNmJlMWVjIiwiaXNzIjoiaHR0cHM6Ly9zc28uc3lzdGVtLmNmLmhvYi5sb2NhbC9hdXRoL3JlYWxtcy9UaW1BRyIsInN1YiI6IjU5ZmQxNzYyLWYxMDctNDRhYy04NTIyLTYwMGEzMDUxYmQyZCIsInR5cCI6IkJlYXJlciIsImF6cCI6ImxvZy1tZXRyaWMtZGFzaGJvYXJkIiwic2Vzc2lvbl9zdGF0ZSI6ImI5NTE3MDUxLTdmYzctNGMzNC04NDc1LWQ0ODMwNjk4MWVjNSIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsidGltLXVzZXIiLCJ0aW0tYWRtaW4iXX0sInNjb3BlIjoidGltYWciLCJyb2xlcyI6WyJ0aW0tdXNlciIsInRpbS1hZG1pbiJdLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJtbWFobGVyIiwiZW1haWwiOiJtbWFobGVyQGV2b2lsYS5kZSJ9.g4D9l8z6Mvtp6j7aqPqpnsLiv-QleAgeXjKAGKbn2TnamBzwiYdeGgZgDIjdAul15388PmUOXXPkd3RLhJ5cBi6LuQHTPYR_X94uPXh6AEgKWZgqznBnQOD3DVmuk_DYMAHud_QnrcrBzRf5d8DeayydtA-PV68W_K8U6dHDoZebjv-wzjgmKBY64krM1YHiALlhXV0gc85lF8leFS1V7L0BdyHKTJvsTuksg2oIajIky0Vc0RERVkU1yikdqFAO7KIUK0qQO8VWqVnzydDRO_qfao3q-Xs7APviCopE_nTYh0pXRRL1fvHx8Ti3fPvXd1yiB7V0YLRJxA9dZ1fnbg',
+    token: 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJQOG5VNGpDdDM0UXhqenExdXNhMXItZjVXb2VWeWp3SXo1RTZLQUxzN2FFIn0.eyJleHAiOjE1OTQzNjg4NjcsImlhdCI6MTU5NDI4MjQ2NywianRpIjoiMTJmMjQ4YWMtZjRkNS00NjYyLWI5ZjQtOTVlYTIxOWRkNTFmIiwiaXNzIjoiaHR0cHM6Ly9zc28uc3lzdGVtLmNmLmhvYi5sb2NhbC9hdXRoL3JlYWxtcy9UaW1BRyIsInN1YiI6IjU5ZmQxNzYyLWYxMDctNDRhYy04NTIyLTYwMGEzMDUxYmQyZCIsInR5cCI6IkJlYXJlciIsImF6cCI6ImxvZy1tZXRyaWMtZGFzaGJvYXJkIiwic2Vzc2lvbl9zdGF0ZSI6IjMwMjk5MjhmLTFkYzYtNDkyNi04ZTFhLTJkMDhmMGNhZTc3NSIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsidGltLXVzZXIiLCJ0aW0tYWRtaW4iXX0sInNjb3BlIjoidGltYWciLCJyb2xlcyI6WyJ0aW0tdXNlciIsInRpbS1hZG1pbiJdLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJtbWFobGVyIiwiZW1haWwiOiJtbWFobGVyQGV2b2lsYS5kZSJ9.FWeOyX_v3V7DC3VOYD9P1v14MG0IOoLH8CadeLiZgclXWXWue0HIsRMbBf2NHk78QdhwE6ACvKg5cClHfYWT3DoUMUYI3QIMRy1CI7MJns2ICJEisNPWNvBtLv4hfhEXX1AUkE-WMwu2dJ7gVIJFJ3n7k3cuoQ-QD8S2-Y6mhyL9enuGRUcuuUZ5JxK5nuJ1EHF3BuBlBqaU1ttxlDdJbluCQdD7Kom189DSme9YVAW7FINUixpKyo2kmMyDcjr4DUrpFyQY0yR61PlEu9uBInHaR3Z5WuaKZ0Y8yoVq8sfe7nD0LQ_ntclcxM8lvlo_0tZZHTd5wyBmqmJ3IsDvog',
 
     baseUrls: {
       serviceBrokerUrl: 'https://osb-log-metric-test.system.cf.hob.local'
@@ -20,8 +20,8 @@ if (!injectedEnv) {
     customEndpoints: [
       //{ url: 'https://osb-log-metric-dashboard-backend-test.system.cf.hob.local', identifier: 'log-metric-backend' },
       //{ url: 'https://log-metric-backend-feature.system.cf.hob.local', identifier: 'log-metric-backend' },
-      { url: 'http://localhost:8080', identifier: 'log-metric-backend' },
-      //{ url: 'https://osb-log-metric-dashboard-backend-keycloak-test.system.cf.hob.local', identifier: 'log-metric-backend' },
+      //{ url: 'http://localhost:8080', identifier: 'log-metric-backend' },
+      { url: 'https://osb-log-metric-dashboard-backend-keycloak-test.system.cf.hob.local', identifier: 'log-metric-backend' },
       { url: 'http://localhost:8081', identifier: 'osb-backup-manager' }
     ],
     ui: {
