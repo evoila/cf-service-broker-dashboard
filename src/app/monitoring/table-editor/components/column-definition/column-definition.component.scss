@@ -21,6 +21,10 @@
     overflow: scroll;
 }
 
+#definition-div::-webkit-scrollbar{
+    display:none;
+}
+
 #preview-div{
     margin: 1em;
     overflow: scroll;

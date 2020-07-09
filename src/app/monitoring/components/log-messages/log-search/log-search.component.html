@@ -27,7 +27,8 @@
             <tr (click)="collapse(i)" *ngFor="let result of results.hits; let i = index" [@flyInOut]="direction"
               [class.active]="i == selectedRow">
               <td id="td">
-                <code innerHTML="{{result._source.logMessage}}"></code>
+                <code *ngIf="!isTimEnv" innerHTML="{{result._source.logMessage}}"></code>
+                <code *ngIf="isTimEnv" innerHTML="{{json.stringify(result._source)}}"></code>
 
                 <div [ngbCollapse]="!isCollapsed[i]">
                   <div>

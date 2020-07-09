@@ -5,10 +5,6 @@
     margin-top: 5em;
 }
 
-.frame ::-webkit-scrollbar{
-
-    display:none;
-}
 #title{
     margin: 1.5em;
 }
@@ -25,7 +21,9 @@
 }
 
 
-
+#definition-div::-webkit-scrollbar{
+    display:none;
+}
 
 #single-query{
     display: inline-block;

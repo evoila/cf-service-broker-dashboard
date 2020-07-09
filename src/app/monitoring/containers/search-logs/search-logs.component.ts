@@ -19,9 +19,9 @@ import {
   transition
 } from '@angular/animations';
 import { authScopeFromBinding } from 'app/monitoring/chart-configurator/model/cfAuthScope';
-import { EsindexComponent } from 'app/monitoring/shared/components/esindex/esindex.component';
 import { Store } from '@ngrx/store';
 import { getBindingsLoadingState, getBindingsAuthMetadata } from '../../shared/store/selectors/bindings.selector';
+import { BindingsState } from '../../shared/store/reducers/binding.reducer';
 
 @Component({
   selector: 'sb-search-logs',
@@ -47,7 +47,6 @@ import { getBindingsLoadingState, getBindingsAuthMetadata } from '../../shared/s
 export class SearchLogsComponent implements OnInit {
 
   @ViewChild(LogSearchComponent) logSearchComponentResultList;
-  //@ViewChild(EsindexComponent) esIndexSelectComponent;
 
   showFilter = false;
   scope: ServiceBinding = {} as ServiceBinding;
@@ -121,9 +120,6 @@ export class SearchLogsComponent implements OnInit {
     this.searchService.getMappings().subscribe(k => {
       this.mappings = k;
       this.esIndexes = Object.keys(this.mappings);
-      if (this.esIndexes.length > 0) {
-        //this.esIndexSelectComponent.choosen = 0;
-      }
     });
     this.store.select(getBindingsLoadingState).pipe(
       filter(state => state.loaded == true), switchMap(k => this.store.select(getBindingsAuthMetadata))

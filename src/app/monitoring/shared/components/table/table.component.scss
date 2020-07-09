@@ -17,6 +17,10 @@
     display:none;
 }
 
+.table-header::-webkit-scrollbar {
+    display:none;
+}
+
 .table-header{
 
     overflow: scroll;

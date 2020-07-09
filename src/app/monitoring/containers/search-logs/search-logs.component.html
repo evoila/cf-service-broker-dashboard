@@ -33,7 +33,7 @@
     <div class="divbox">
       <sb-log-search class="log-search-component" *ngIf="(!buttonDisabled() && !error)" [pagination]="page"
         [steps]="size" [hits]="hits$" [inputFocus]="queryInputHasFocus" (more)="flick($event)"
-        (toggleContextSearch)="contextSearch = $event" (logContextSeed)="logContextSeed = $event">
+        (toggleContextSearch)="contextSearch = $event" (logContextSeed)="logContextSeed = $event" [isTimEnv]="isTimEnv">
       </sb-log-search>
 
       <div class="single-log-context-box" *ngIf="contextSearch" [@swipeInOut]="contextSearch ? 'out' : 'in'">
