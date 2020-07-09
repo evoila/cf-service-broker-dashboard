@@ -18,12 +18,13 @@ export class EsindexComponent implements OnInit {
 
   @Input('indexList')
   set indexList(esIndexes: Array<string>) {
+    
+    this.esIndexes = esIndexes.sort();
     if (esIndexes && esIndexes.length) {
       this.choosen = 0;
       this.index.next("*-" + esIndexes[0]);
       this.rawIndex.next(esIndexes[0]);
     }
-    this.esIndexes = esIndexes;
   }
 
   choosen: number = -1;
