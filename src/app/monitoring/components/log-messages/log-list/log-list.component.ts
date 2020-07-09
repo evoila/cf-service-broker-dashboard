@@ -35,7 +35,7 @@ export class LogListComponent implements OnInit, OnDestroy {
   private scollTo: number;
   private editor: any;
 
-  editorOptions = { readOnly: true, language: 'javascript', glyphMargin: true };
+  editorOptions = { readOnly: true, language: 'json', glyphMargin: true };
   code: string;
   logs: Array<String> = [];
 
@@ -65,7 +65,7 @@ export class LogListComponent implements OnInit, OnDestroy {
         if (this.data[0]) {
           this.data[0].forEach(hit => {
             if (this.monacoFieldSelection === "COMPLETEOBJECT") {
-              this.code += hit._source + '\n';
+              this.code += JSON.stringify(hit._source) + '\n';
             } else {
               this.code += hit._source[this.monacoFieldSelection] + '\n';
             }
