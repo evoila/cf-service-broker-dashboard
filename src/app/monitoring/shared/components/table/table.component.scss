@@ -8,6 +8,14 @@
     margin: 0.2em;
 
 }
+#table::-webkit-scrollbar{
+    display:none;
+}
+
+
+#table * ::-webkit-scrollbar{
+    display:none;
+}
 
 .table-header{
 

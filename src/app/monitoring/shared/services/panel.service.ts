@@ -11,7 +11,7 @@ import { Panel } from '../model/panel';
 @Injectable()
 export class PanelService {
   private readonly url: string;
-  private cfAuthParams: AuthParameterService;
+  private authParams: AuthParameterService;
 
   constructor(
     private http: HttpClient,
@@ -19,12 +19,12 @@ export class PanelService {
     cfAuthParams: AuthParameterService,
     storeBindings: Store<BindingsState>
   ) {
-    this.cfAuthParams = cfAuthParams.construct(storeBindings);
+    this.authParams = cfAuthParams.construct(storeBindings);
     this.url = `${endpoint.getUri()}/charting/panel`;
   }
 
-  public getAllCharts(): Observable<Array<Panel>> {
-    return this.cfAuthParams.createAuthParameters().pipe(
+  public getPanels(): Observable<Array<Panel>> {
+    return this.authParams.createAuthParameters().pipe(
       flatMap(params => {
         return this.http.get<Array<Panel>>(this.url, { params });
       })

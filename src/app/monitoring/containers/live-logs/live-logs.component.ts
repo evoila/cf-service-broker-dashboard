@@ -10,6 +10,9 @@ import { TimeService } from '../../shared/services/time.service';
 import { ShortcutService } from '../../../core/services/shortcut.service';
 import { HighlightingAndHits } from '../../components/log-messages/log-list/log-list.component';
 import { authScopeFromBinding } from 'app/monitoring/chart-configurator/model/cfAuthScope';
+import { Store } from '@ngrx/store';
+import { getBindingsLoadingState, getBindingsAuthMetadata } from '../../shared/store/selectors/bindings.selector';
+import { BindingsState } from '../../shared/store/reducers/binding.reducer';
 
 @Component({
   selector: 'sb-live-logs',
@@ -25,10 +28,13 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
   private streamSub: Subscription;
   appId: string;
   buttonDisabled: boolean = false;
-
+  mappings: Map<string, Array<string>>;
   //Observable to pass data to subcomponent
   hitSubject = new Subject<Hits | HighlightingAndHits>();
   hits$ = new Observable<Hits | HighlightingAndHits>(k => this.hitSubject.subscribe(k));
+  // this variable tells wether the app is deployes in cf, tim or kubernetes mode
+  deploymentEnvironment: string;
+  elasticIndex;
 
   /* 
      Config-Values 
@@ -44,7 +50,8 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
 
   constructor(private searchService: SearchService,
     private timeService: TimeService,
-    private shortcut: ShortcutService
+    private shortcut: ShortcutService,
+    private store: Store<BindingsState>
   ) { }
 
   ngOnInit() {
@@ -59,6 +66,10 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
       }
     });
     this.subscriptions = [...this.subscriptions, sub];
+    this.searchService.getMappings().subscribe(k => this.mappings = k);
+    this.store.select(getBindingsLoadingState).pipe(
+      filter(state => state.loaded == true), switchMap(k => this.store.select(getBindingsAuthMetadata))
+    ).subscribe(k => { this.deploymentEnvironment = k.type });
   }
   ngOnDestroy() {
     if (this.streamSub) {

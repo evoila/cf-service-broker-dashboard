@@ -39,45 +39,48 @@ export class AuthParameterService {
   }
 
   public createAuthScope(): Observable<AuthScope> {
-    
+
     const { serviceInstanceId } = environment;
     var type = "";
-    const subscr$ = this.getBindingType().pipe(take(1)).subscribe(k => {
-      type = k.type == 'servicebroker' ? 'cf' : 'kc';
-    });
-    subscr$.unsubscribe();
-    if (type == 'cf'){
-      //console.log('makin cf scope..');
-      return this.bindingSpecials$.pipe(
-        map(orgAndSpace => {
-          return {
-            type: 'cf',
-            orgId: (orgAndSpace as SpaceAndOrg).org,
-            spaceId: (orgAndSpace as SpaceAndOrg).space,
-            serviceInstanceId
-          } as CfAuthScope;
-        })
-      );
-    }
-    else if (type == 'kc'){
-      //console.log('makin kc scope..');
-      return this.bindingSpecials$.pipe(
-        map(partAndCust => {
-          return {
-            type: 'kc',
-            customerId: (partAndCust as PartnerAndCustomer).customer,
-            partnerId: (partAndCust as PartnerAndCustomer).partner,
-            serviceInstanceId
-          } as KcAuthScope;
-        })
-      );
-    }
-    else{
-      // Throw Error here!
-      return new Observable<AuthScope>()
-    }    
-    
-    
+    /* const subscr$ = this.getBindingType().pipe(filter(k=> ),take(1)).subscribe(k => {
+      
+    }); */
+    return this.bindingSpecials$.pipe(switchMap(k => {
+      const type = k.type == 'servicebroker' ? 'cf' : 'kc';
+      if (type == 'cf') {
+        return this.bindingSpecials$.pipe(
+          map(orgAndSpace => {
+            return {
+              type: 'cf',
+              orgId: (orgAndSpace as SpaceAndOrg).org,
+              spaceId: (orgAndSpace as SpaceAndOrg).space,
+              serviceInstanceId
+            } as CfAuthScope;
+          })
+        );
+      }
+      else if (type == 'kc') {
+        //console.log('makin kc scope..');
+        return this.bindingSpecials$.pipe(
+          map(partAndCust => {
+            return {
+              type: 'kc',
+              customerId: (partAndCust as PartnerAndCustomer).customer,
+              partnerId: (partAndCust as PartnerAndCustomer).partner,
+              serviceInstanceId
+            } as KcAuthScope;
+          })
+        );
+      }
+      else {
+        // Throw Error here!
+        return new Observable<AuthScope>()
+      }
+    }));
+
+
+
+
   }
 
   /*
@@ -123,20 +126,20 @@ OLD LOGIC OF CONSTRUCT METHOD ONLY SUITABLE FOR CF SERVICEBROKER BINDINGS
     return this;
   }
 
-  getBindingType() : Observable<BindingAuthMetadata>{
-    
+  getBindingType(): Observable<BindingAuthMetadata> {
+
     return this.store.select(getBindingsLoadingState).pipe(
-     filter(state => {
-       // dispatch Event if
-       !state.loaded &&
-         !state.loading &&
+      filter(state => {
+        // dispatch Event if
+        !state.loaded &&
+          !state.loading &&
           timer(8000).subscribe(k => this.store.dispatch(new LoadBindings()));
         return state.loaded == true;
       }), switchMap(k => this.store.select(getBindingsAuthMetadata))
-     );
-    
-     
-}
+    );
+
+
+  }
 
 
   constructor(private paramService: HttpGetParamsService) { }

@@ -1,9 +1,12 @@
 <div class="container">
   <div class="nav-container">
     <sb-appid [selected]="scope.appId" class="appId" (app)="setScope($event)"></sb-appid>
-
-
-    <button [ngClass]="{'btn-primary': !streaming, 'btn-danger': streaming, 'btn btn-primary': true}" class="btn btn-primary" (click)="toggleStream()" [disabled]="buttonDisabled">
+    <!-- tell wether the app is running in tim, cf or kubernetes mode. tim mode supports index selection -->
+    <!-- <div *ngIf="deploymentEnvironment && deploymentEnvironment === 'managementportal'">
+        <select [ngModel]="elasticIndex"></select>
+    </div> -->
+    <button [ngClass]="{'btn-primary': !streaming, 'btn-danger': streaming, 'btn btn-primary': true}"
+      class="btn btn-primary" (click)="toggleStream()" [disabled]="buttonDisabled">
       {{streaming? 'stop': 'start'}}
 
     </button>
