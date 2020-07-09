@@ -1,4 +1,4 @@
- <!--
+<!--
     <p> demo query: </p>
     <p> {{  query.name  + ': '  + query.boolQuery.to_json() }} </p>
   -->
@@ -8,17 +8,18 @@
 <div class="query-editor-frame">
 
   <div>
-    <sb-esindex #indexKeysDropdownSelect class="es-index-select" [indexList]="esIndexes" (index)="did_select_index($event)"></sb-esindex>
+    <sb-esindex #indexKeysDropdownSelect class="es-index-select" [indexList]="esIndexes"
+      (index)="did_select_index($event)"></sb-esindex>
   </div>
 
   <div id="query_creation_div">
     <label for="q_textarea">Elastic Bool Query : </label>
     <textarea id="q_textarea" name="q_textarea" rows="8" cols="200" placeholder="insert 'must' part of query here">
-      
+
       {{ es_bool_query_text_area_must }}
 
     </textarea>
-    <sb-appid #appNameDropdownSelect class="appId" [selected]="XXX" (app)="did_select_scope($event)"></sb-appid>
+    <sb-appid #appNameDropdownSelect class="appId" (app)="did_select_scope($event)"></sb-appid>
   </div>
 
   <div>
@@ -26,7 +27,7 @@
     <span>{{ query_test_result_hint }}</span>
   </div>
   <div>
-    
+
     <button class="btn btn-primary cancel_q" (click)="cancel_query_editor()"> cancel </button>
     <button class="btn btn-primary save_q" (click)="save_query()"> take </button>
 
