@@ -20,9 +20,8 @@ import {
 } from '@angular/animations';
 import { authScopeFromBinding } from 'app/monitoring/chart-configurator/model/cfAuthScope';
 import { EsindexComponent } from 'app/monitoring/shared/components/esindex/esindex.component';
-import { getBindingsLoadingState, getBindingsAuthMetadata } from 'app/monitoring/chart-configurator/store';
 import { Store } from '@ngrx/store';
-import { BindingsState } from 'app/monitoring/shared/store/reducers/binding.reducer';
+import { getBindingsLoadingState, getBindingsAuthMetadata } from '../../shared/store/selectors/bindings.selector';
 
 @Component({
   selector: 'sb-search-logs',
@@ -57,7 +56,7 @@ export class SearchLogsComponent implements OnInit {
   public error: boolean = false;
 
   //number of elements per request
-  size = 100;
+  size = 50;
 
   contextSearch: boolean = false;
   logContextSeed: LogDataModel;
@@ -118,7 +117,7 @@ export class SearchLogsComponent implements OnInit {
     });
     this.setDateInfo();
 
-/*
+
     this.searchService.getMappings().subscribe(k => {
       this.mappings = k;
       this.esIndexes = Object.keys(this.mappings);
@@ -131,7 +130,7 @@ export class SearchLogsComponent implements OnInit {
     ).subscribe(k => {
       this.deploymentEnvironment = k.type
     });
-*/
+
 
   }
 
@@ -235,18 +234,18 @@ export class SearchLogsComponent implements OnInit {
     });
   }
 
-/*
-  export class SearchRequest {
-    public range?: TimeRange;
-    public appId?: string;
-    public appName: string;
-    public authScope: AuthScope;
-    public docSize?: DocSize;
-    public query?: string;
-    public filter: [Map<string, any>]
-}
-
-*/
+  /*
+    export class SearchRequest {
+      public range?: TimeRange;
+      public appId?: string;
+      public appName: string;
+      public authScope: AuthScope;
+      public docSize?: DocSize;
+      public query?: string;
+      public filter: [Map<string, any>]
+  }
+  
+  */
 
   private buildSearchRequest(from = 0, initialRequest: boolean): SearchRequest {
 

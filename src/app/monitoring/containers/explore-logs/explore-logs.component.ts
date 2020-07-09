@@ -4,9 +4,8 @@ import { ServiceBinding, BindingTypeIdentifier } from '../../model/service-bindi
 import { SearchRequest, TimeRange } from '../../model/search-request';
 import { SearchService } from '../../shared/services/search.service';
 import { Hits, SearchResponse } from '../../model/search-response';
-import { Subject, Subscription } from 'rxjs';
-import { Observable } from 'rxjs/internal/Observable';
-import { tap, filter, timestamp, switchMap } from 'rxjs/operators';
+import { Subject, Subscription, Observable } from 'rxjs';
+import { tap, filter, switchMap } from 'rxjs/operators';
 import { NotificationService, Notification, NotificationType } from '../../../core/notification.service';
 import * as moment from 'moment/moment';
 import { TimeService } from '../../shared/services/time.service';
@@ -17,7 +16,7 @@ import { authScopeFromBinding } from 'app/monitoring/chart-configurator/model/cf
 //import { EsindexComponent } from 'app/monitoring/shared/components/esindex/esindex.component';
 import { BindingsState } from 'app/monitoring/shared/store/reducers/binding.reducer';
 import { Store } from '@ngrx/store';
-import { getBindingsLoadingState, getBindingsAuthMetadata } from 'app/monitoring/chart-configurator/store';
+import { getBindingsLoadingState, getBindingsAuthMetadata } from '../../shared/store/selectors/bindings.selector';
 
 @Component({
   selector: 'sb-explore-logs',
@@ -27,7 +26,7 @@ import { getBindingsLoadingState, getBindingsAuthMetadata } from 'app/monitoring
 export class ExploreLogsComponent implements OnInit, OnDestroy {
   //@ViewChild(EsindexComponent) esIndexSelectComponent;
   @ViewChild(LogFilterComponent) logFilter;
-  
+
 
   fromDate: any = moment().subtract(2, "days").unix();
   toDate: any = moment().unix();
@@ -99,22 +98,21 @@ export class ExploreLogsComponent implements OnInit, OnDestroy {
     this.setDateInfo();
     this.subscriptions = [...this.subscriptions, sub];
 
-/*
+
     this.searchService.getMappings().subscribe(k => {
       this.mappings = k;
       this.esIndexes = Object.keys(this.mappings);
-      if (this.esIndexes.length > 0) {
+      if (this.esIndexes.length) {
         //this.esIndexSelectComponent.choosen = 0;
       }
     });
     this.store.select(getBindingsLoadingState).pipe(
-      filter(state => state.loaded == true), switchMap(k => this.store.select(getBindingsAuthMetadata))
+      filter(state => state.loaded === true), switchMap(k => this.store.select(getBindingsAuthMetadata))
     ).subscribe(k => {
       this.deploymentEnvironment = k.type
 
     });
 
-*/
   }
 
   ngOnDestroy() {

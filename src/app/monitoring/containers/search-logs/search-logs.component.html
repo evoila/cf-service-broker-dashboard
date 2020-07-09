@@ -1,13 +1,10 @@
 <div class="container" sbSpinner [condition$]="loading$">
   <div class="head">
-  <!--
-
     <div>
       <sb-esindex #indexKeysDropdownSelect *ngIf="isTimEnv" class="es-index-select" [indexList]="esIndexes"
         (index)="did_select_index($event)"></sb-esindex>
     </div>
 
-   -->  
     <div class="head-group head-group-1">
       <sb-appid class="appId" [selected]="scope.appId" (app)="setScope($event)" id="appid"></sb-appid>
       <button (click)="showFilter = !showFilter" class="btn btn-light calendar-button">
@@ -33,24 +30,25 @@
       (toDateChange)="setToDate($event)"></sb-timefilter>
   </div>
   <main>
-      <div class="divbox">
-        <sb-log-search class="log-search-component" *ngIf="(!buttonDisabled() && !error)" [pagination]="page" [steps]="size" [hits]="hits$"
-        [inputFocus]="queryInputHasFocus" (more)="flick($event)" (toggleContextSearch)="contextSearch = $event" (logContextSeed)="logContextSeed = $event" >
-        </sb-log-search>
+    <div class="divbox">
+      <sb-log-search class="log-search-component" *ngIf="(!buttonDisabled() && !error)" [pagination]="page"
+        [steps]="size" [hits]="hits$" [inputFocus]="queryInputHasFocus" (more)="flick($event)"
+        (toggleContextSearch)="contextSearch = $event" (logContextSeed)="logContextSeed = $event">
+      </sb-log-search>
 
-        <div class="single-log-context-box" *ngIf="contextSearch" [@swipeInOut]="contextSearch ? 'out' : 'in'">
-          <h5 id="context-header">Log History Context</h5>
-          <div class="inner-context-box">
-            <!--<code id="context-sub-header">{{logContextSeed._source.logMessage}}</code>-->
-            <sb-log-context-explorer class="context-explorer" [mainLogMsg]="logContextSeed"> </sb-log-context-explorer>
-          </div>
+      <div class="single-log-context-box" *ngIf="contextSearch" [@swipeInOut]="contextSearch ? 'out' : 'in'">
+        <h5 id="context-header">Log History Context</h5>
+        <div class="inner-context-box">
+          <!--<code id="context-sub-header">{{logContextSeed._source.logMessage}}</code>-->
+          <sb-log-context-explorer class="context-explorer" [mainLogMsg]="logContextSeed"> </sb-log-context-explorer>
         </div>
       </div>
+    </div>
 
-      <div *ngIf="error" id="error">
-        <i [ngClass]="{'far fa-eye': true}" class="noresulticon"></i>
-        <p id="noresultmsg"> No Data found. Please check your requests. </p>
-      </div>
-  
+    <div *ngIf="error" id="error">
+      <i [ngClass]="{'far fa-eye': true}" class="noresulticon"></i>
+      <p id="noresultmsg"> No Data found. Please check your requests. </p>
+    </div>
+
   </main>
 </div>

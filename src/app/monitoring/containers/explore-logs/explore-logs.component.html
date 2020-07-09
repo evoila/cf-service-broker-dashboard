@@ -1,44 +1,43 @@
 <div class="container" sbSpinner [condition$]="loading$">
   <div class="head">
-    
-    <!--
 
-      <div>
+
+    <div>
       <sb-esindex #indexKeysDropdownSelect *ngIf="isTimEnv" class="es-index-select" [indexList]="esIndexes"
         (index)="did_select_index($event)"></sb-esindex>
     </div>
 
-    -->
-    
+
     <div class="head-group head-group-1">
-        <sb-appid class="appId" [selected]="appId" (app)="setScope($event)"></sb-appid>
-        <button (click)="showFilter = !showFilter" class="btn btn-light calendar-button">
-          <i class="fas fa-history"></i>
-          <span><label id="dateinfo">{{timeInfo}}</label></span>
-        </button>
+      <sb-appid class="appId" [selected]="appId" (app)="setScope($event)"></sb-appid>
+      <button (click)="showFilter = !showFilter" class="btn btn-light calendar-button">
+        <i class="fas fa-history"></i>
+        <span><label id="dateinfo">{{timeInfo}}</label></span>
+      </button>
     </div>
     <div class="head-group head-group-2">
-        <button (click)="showAddFilterDialouge()" class="btn btn-light addfilter-button"><i class="fas fa-filter"></i></button>
-        <button (click)="fireSearchRequest()" class="btn btn-primary" [disabled]="!scope">search</button>
+      <button (click)="showAddFilterDialouge()" class="btn btn-light addfilter-button"><i
+          class="fas fa-filter"></i></button>
+      <button (click)="fireSearchRequest()" class="btn btn-primary" [disabled]="!scope">search</button>
     </div>
   </div>
   <div *ngIf="!showFilter && timeErrorInfo.length > 0" class="subhead">
-      <div id="dateinfo-div">
-          <label id="date-error-info">{{timeErrorInfo}}</label>
-      </div>
-      <span></span>
-      <span></span>
+    <div id="dateinfo-div">
+      <label id="date-error-info">{{timeErrorInfo}}</label>
+    </div>
+    <span></span>
+    <span></span>
   </div>
-  <div >
-      <sb-log-filter (update)="updateFilters($event)" id="logfilter"></sb-log-filter>
+  <div>
+    <sb-log-filter (update)="updateFilters($event)" id="logfilter"></sb-log-filter>
   </div>
 
   <div *ngIf="showFilter">
-      <sb-timefilter class="time-filter" [toDate]="toDate" [fromDate]="fromDate"
-      (fromDateChange)="setFromDate($event)" (toDateChange)="setToDate($event)"></sb-timefilter>
+    <sb-timefilter class="time-filter" [toDate]="toDate" [fromDate]="fromDate" (fromDateChange)="setFromDate($event)"
+      (toDateChange)="setToDate($event)"></sb-timefilter>
   </div>
   <main>
-    <sb-log-list *ngIf="scope && hits$" [searchResponse]="hits$">
+    <sb-log-list *ngIf="scope && hits$" [searchResponse]="hits$" [monacoFieldSelection]="monacoFieldSelection">
       <div *ngIf="hits" class="loadmore" (click)="appendLogs()"> Load More Logs... {{hits.hits.length}}/{{hits.total}}
       </div>
     </sb-log-list>
