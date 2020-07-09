@@ -35,7 +35,6 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
   // this variable tells wether the app is deployes in cf, tim or kubernetes mode
   deploymentEnvironment: string;
   elasticIndex;
-
   /* 
      Config-Values 
      for Request-Scheduling 
