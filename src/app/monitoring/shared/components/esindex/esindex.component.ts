@@ -36,7 +36,6 @@ export class EsindexComponent implements OnInit {
   }
 
 
-
   public setChoosen() {
     this.index.next("*-" + this.esIndexes[this.choosen]);
     this.rawIndex.next(this.esIndexes[this.choosen]);

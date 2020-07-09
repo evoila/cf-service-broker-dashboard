@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SearchService } from '../../shared/services/search.service';
 import { SearchRequest, TimeRange } from '../../model/search-request';
-import { ServiceBinding } from '../../model/service-binding';
+import { ServiceBinding, BindingTypeIdentifier } from '../../model/service-binding';
 import { Hits, SearchResponse } from '../../model/search-response';
 import * as moment from 'moment/moment';
 import { Subject, Observable } from 'rxjs';
-import { tap, filter, catchError } from 'rxjs/operators';
+import { tap, filter, catchError, switchMap } from 'rxjs/operators';
 import { NotificationService, NotificationType, Notification } from '../../../core/notification.service';
 import { TimeService } from '../../shared/services/time.service';
 import { ShortcutService } from '../../../core/services/shortcut.service';
@@ -19,6 +19,10 @@ import {
   transition
 } from '@angular/animations';
 import { authScopeFromBinding } from 'app/monitoring/chart-configurator/model/cfAuthScope';
+import { EsindexComponent } from 'app/monitoring/shared/components/esindex/esindex.component';
+import { getBindingsLoadingState, getBindingsAuthMetadata } from 'app/monitoring/chart-configurator/store';
+import { Store } from '@ngrx/store';
+import { BindingsState } from 'app/monitoring/shared/store/reducers/binding.reducer';
 
 @Component({
   selector: 'sb-search-logs',
@@ -44,6 +48,7 @@ import { authScopeFromBinding } from 'app/monitoring/chart-configurator/model/cf
 export class SearchLogsComponent implements OnInit {
 
   @ViewChild(LogSearchComponent) logSearchComponentResultList;
+  //@ViewChild(EsindexComponent) esIndexSelectComponent;
 
   showFilter = false;
   scope: ServiceBinding = {} as ServiceBinding;
@@ -82,11 +87,24 @@ export class SearchLogsComponent implements OnInit {
 
   page: number;
 
+  mappings: Map<string, Array<string>>;
+  esIndexes: Array<string>;
+  // this variable tells wether the app is deployes in cf, tim or kubernetes mode
+  deploymentEnvironment: string;
+
+  elasticIndex: string;
+
+  get isTimEnv(): boolean {
+    return this.deploymentEnvironment == BindingTypeIdentifier.MANAGEMENTPORTAL;
+  }
+
+
   constructor(
     private searchService: SearchService,
     private notification: NotificationService,
     private timeService: TimeService,
-    private shortcut: ShortcutService) { }
+    private shortcut: ShortcutService,
+    private store: Store<BindingsState>) { }
 
   ngOnInit() {
     this.shortcut.bindShortcut({
@@ -99,6 +117,22 @@ export class SearchLogsComponent implements OnInit {
       }
     });
     this.setDateInfo();
+
+/*
+    this.searchService.getMappings().subscribe(k => {
+      this.mappings = k;
+      this.esIndexes = Object.keys(this.mappings);
+      if (this.esIndexes.length > 0) {
+        //this.esIndexSelectComponent.choosen = 0;
+      }
+    });
+    this.store.select(getBindingsLoadingState).pipe(
+      filter(state => state.loaded == true), switchMap(k => this.store.select(getBindingsAuthMetadata))
+    ).subscribe(k => {
+      this.deploymentEnvironment = k.type
+    });
+*/
+
   }
 
   setScope(event: ServiceBinding) {
@@ -223,7 +257,8 @@ export class SearchLogsComponent implements OnInit {
       docSize: {
         from,
         size: this.size
-      }
+      },
+      index: this.elasticIndex
     } as SearchRequest;
 
 
@@ -271,6 +306,9 @@ export class SearchLogsComponent implements OnInit {
   }
 
 
+  did_select_index(index) {
+    this.elasticIndex = index;
+  }
 }
 
 type dir = 'in' | 'out';
