@@ -21,7 +21,7 @@ import { EsindexComponent } from 'app/monitoring/shared/components/esindex/esind
   styleUrls: ['./live-logs.component.scss']
 })
 export class LiveLogsComponent implements OnInit, OnDestroy {
-  @ViewChild(EsindexComponent) esIndexSelectComponent;
+  
 
 
   scope: ServiceBinding = {} as ServiceBinding;
@@ -86,9 +86,7 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
     this.searchService.getMappings().subscribe(k => {
       this.mappings = k;
       this.esIndexes = Object.keys(this.mappings);
-      if (this.esIndexes.length > 0) {
-        this.esIndexSelectComponent.choosen = 0;
-      }
+      
     });
     this.store.select(getBindingsLoadingState).pipe(
       filter(state => state.loaded == true), switchMap(k => this.store.select(getBindingsAuthMetadata))
