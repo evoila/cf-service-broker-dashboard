@@ -120,13 +120,14 @@ export class BaseQueryInputComponent implements OnInit {
     
 
   //TODO: update data array in table editor component after deleting certain base-query-data-parts 
-
     const index : number = this.selected_query_descriptions.indexOf(result_name, 0);
     if (index > -1) {
       this.selected_query_descriptions.splice(index, 1);
       if (this.selected_query_descriptions.length < 1){
-        this.valid = false;
+        //this.valid = false;
         this.close_column_definer.next();
+        this.baseInputCollapsed = false;
+
       }
     }
   }

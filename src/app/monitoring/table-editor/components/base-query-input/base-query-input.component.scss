@@ -10,11 +10,12 @@
 }
 #get-more-data{
     cursor: pointer;
-    border: 2px solid #ddd;
+    border: 2px solid $primary-color-ultra-light;
     border-radius: 18px;
-    padding: 3px 10px;
-    margin-left: 18px;
+    padding: 1px 10px 2px 8px;
+    margin-left: 10px;
     color: #aaa;
+    font-size: 9pt;
 }
 
 #get-more-data:hover{
@@ -33,11 +34,11 @@
 
 #base-data-brick{
     height: 1.78em;
-    padding: 2px 8px 2px 16px;
+    padding: 3px 8px 2px 16px;
     margin: 0em 0.5em 0em 0em;
     border-radius: $basic-border-radius;
     line-height: 1.4em;
-    font-size: 0.7em;
+    font-size: 9pt;
     border: 0px;
     box-sizing: border-box;
     background-color: $primary-color-light;
