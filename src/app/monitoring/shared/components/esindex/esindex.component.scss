@@ -1,0 +1,41 @@
+@import '../../../../core/core';
+
+
+.box{
+    display: grid;
+    grid-template-columns: 0px 240px;
+    grid-gap: 0.6em;
+    border-radius: $basic-border-radius;;
+    cursor: pointer;
+}
+
+#label {
+    color: $gray-3;
+    font-size: 1em;
+    margin: 0rem;
+    margin-left: 4px;
+    margin-top: 0.44rem;
+    width: 35px;
+    height: fit-content;
+}
+
+.custom-select.mr-sm-2.indexKey{   // select element with normal index selected
+    cursor: pointer;
+    justify-self: stretch;
+    padding-left: 60px;
+    padding-top: 4px;
+    width: 275px;
+    border: 3px solid $gray-4;
+    border-radius: $basic-border-radius;
+    background-color: $transparent;
+    &chosen-alive{
+        color: $gray-2;
+    }
+    &chosen-depr{   // select element with special ? index selected
+        color: lightcoral;
+    }
+}
+
+.custom-select.mr-sm-2.indexKey:hover{
+    border: 3px solid $special-accent-color-light;
+}

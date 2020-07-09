@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { SearchService } from '../../shared/services/search.service';
-import { ServiceBinding } from '../../model/service-binding';
+import { ServiceBinding, BindingTypeIdentifier } from '../../model/service-binding';
 import { timer, Subscription, Subject, Observable } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 import { SearchRequest, TimeRange } from '../../model/search-request';
@@ -13,6 +13,7 @@ import { authScopeFromBinding } from 'app/monitoring/chart-configurator/model/cf
 import { Store } from '@ngrx/store';
 import { getBindingsLoadingState, getBindingsAuthMetadata } from '../../shared/store/selectors/bindings.selector';
 import { BindingsState } from '../../shared/store/reducers/binding.reducer';
+import { EsindexComponent } from 'app/monitoring/shared/components/esindex/esindex.component';
 
 @Component({
   selector: 'sb-live-logs',
@@ -20,6 +21,9 @@ import { BindingsState } from '../../shared/store/reducers/binding.reducer';
   styleUrls: ['./live-logs.component.scss']
 })
 export class LiveLogsComponent implements OnInit, OnDestroy {
+  @ViewChild(EsindexComponent) esIndexSelectComponent;
+
+
   scope: ServiceBinding = {} as ServiceBinding;
   streaming: boolean = false;
   private fromDate: any;
@@ -29,12 +33,14 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
   appId: string;
   buttonDisabled: boolean = false;
   mappings: Map<string, Array<string>>;
+  esIndexes: Array<string>;
   //Observable to pass data to subcomponent
   hitSubject = new Subject<Hits | HighlightingAndHits>();
   hits$ = new Observable<Hits | HighlightingAndHits>(k => this.hitSubject.subscribe(k));
   // this variable tells wether the app is deployes in cf, tim or kubernetes mode
   deploymentEnvironment: string;
-  elasticIndex;
+  isTimEnv : boolean = false;
+  elasticIndex : string;
 
   /* 
      Config-Values 
@@ -66,11 +72,23 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
       }
     });
     this.subscriptions = [...this.subscriptions, sub];
-    this.searchService.getMappings().subscribe(k => this.mappings = k);
+    this.searchService.getMappings().subscribe(k => {
+      this.mappings = k;
+      this.esIndexes = Object.keys(this.mappings);
+      if (this.esIndexes.length > 0){
+        this.esIndexSelectComponent.choosen = 0;
+      }
+    });
     this.store.select(getBindingsLoadingState).pipe(
       filter(state => state.loaded == true), switchMap(k => this.store.select(getBindingsAuthMetadata))
-    ).subscribe(k => { this.deploymentEnvironment = k.type });
+    ).subscribe(k => { 
+      this.deploymentEnvironment = k.type
+      this.isTimEnv = this.deploymentEnvironment == BindingTypeIdentifier.MANAGEMENTPORTAL;
+    });
+
   }
+
+
   ngOnDestroy() {
     if (this.streamSub) {
       this.streamSub.unsubscribe();
@@ -80,7 +98,10 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
     }
   }
   setScope(scope: ServiceBinding) {
-    if (Object.keys(scope).length) {
+    if (this.streaming){
+      this.toggleStream();
+    }
+    if (scope && Object.keys(scope).length) {
       this.scope = scope;
       this.buttonDisabled = false;
     }
@@ -143,7 +164,8 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
       docSize: {
         from: 0,
         size: this.size
-      }
+      },
+      index: this.elasticIndex
     } as SearchRequest;
 
 
@@ -155,6 +177,18 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
     if (this.fromDate) {
       searchRequest.range.from = this.fromDate;
     }
+    console.log(searchRequest.index);
+    console.log(searchRequest);
     return searchRequest;
   }
+
+
+
+  did_select_index(index){
+    if (this.streaming){
+      this.toggleStream();
+    }
+    this.elasticIndex = index;
+  }
+
 }
