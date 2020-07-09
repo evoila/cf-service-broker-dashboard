@@ -2,13 +2,10 @@
   <div class="head">
 
 
-    <div>
-      <sb-esindex #indexKeysDropdownSelect *ngIf="isTimEnv" class="es-index-select" [indexList]="esIndexes"
-        (index)="did_select_index($event)"></sb-esindex>
-    </div>
-
 
     <div class="head-group head-group-1">
+      <sb-esindex #indexKeysDropdownSelect *ngIf="isTimEnv" class="es-index-select" [indexList]="esIndexes"
+        (index)="did_select_index($event)"></sb-esindex>
       <sb-appid class="appId" [selected]="appId" (app)="setScope($event)"></sb-appid>
       <button (click)="showFilter = !showFilter" class="btn btn-light calendar-button">
         <i class="fas fa-history"></i>

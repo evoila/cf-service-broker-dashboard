@@ -24,7 +24,6 @@ import { getBindingsLoadingState, getBindingsAuthMetadata } from '../../shared/s
   styleUrls: ['./explore-logs.component.scss']
 })
 export class ExploreLogsComponent implements OnInit, OnDestroy {
-  //@ViewChild(EsindexComponent) esIndexSelectComponent;
   @ViewChild(LogFilterComponent) logFilter;
 
 
@@ -102,9 +101,7 @@ export class ExploreLogsComponent implements OnInit, OnDestroy {
     this.searchService.getMappings().subscribe(k => {
       this.mappings = k;
       this.esIndexes = Object.keys(this.mappings);
-      if (this.esIndexes.length) {
-        //this.esIndexSelectComponent.choosen = 0;
-      }
+      
     });
     this.store.select(getBindingsLoadingState).pipe(
       filter(state => state.loaded === true), switchMap(k => this.store.select(getBindingsAuthMetadata))

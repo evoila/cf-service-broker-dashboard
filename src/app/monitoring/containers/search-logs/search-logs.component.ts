@@ -22,6 +22,7 @@ import { authScopeFromBinding } from 'app/monitoring/chart-configurator/model/cf
 import { EsindexComponent } from 'app/monitoring/shared/components/esindex/esindex.component';
 import { Store } from '@ngrx/store';
 import { getBindingsLoadingState, getBindingsAuthMetadata } from '../../shared/store/selectors/bindings.selector';
+import { BindingsState } from 'app/monitoring/shared/store/reducers/binding.reducer';
 
 @Component({
   selector: 'sb-search-logs',
