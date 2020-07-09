@@ -5,7 +5,7 @@
 // this component is the full page container offering the Possibility to create a valid es Query
 // before saving an ES Query it's possible to validate it with different App Bindings
 
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ESQuery } from '../../model/es-query';
 import { RawQuery } from '../../model/raw-query';
 import { SearchService } from 'app/monitoring/shared/services/search.service';
@@ -16,6 +16,7 @@ import { getQueriesState, RunQuery } from '../../store';
 import { filter, take } from 'rxjs/operators';
 import { environment } from 'environments/runtime-environment';
 import { ServiceBinding } from 'app/monitoring/model/service-binding';
+import { EsindexComponent } from 'app/monitoring/shared/components/esindex/esindex.component';
 
 @Component({
   selector: 'sb-query-editor',
@@ -23,6 +24,7 @@ import { ServiceBinding } from 'app/monitoring/model/service-binding';
   styleUrls: ['./query-editor.component.scss']
 })
 export class QueryEditorComponent implements OnInit {
+  @ViewChild(EsindexComponent) esIndexSelectComponent;
 
   @Output('close-query-editor')
   close_query_editor = new EventEmitter<ESQuery>();
@@ -41,8 +43,9 @@ export class QueryEditorComponent implements OnInit {
   query_test_result_hint = "";
   es_bool_query_text_area_must: string = "{'match' : { '_index' : '*-logmessages'} }";
 
-  public fields: Map<string, Array<Field>>;
-  public mappings: any = "";
+  mappings: Map<string, Array<string>>;
+  esIndexes: Array<string>;
+  elasticIndex: string;
   
   //fetched_indexes: Array<string>;
 
@@ -51,18 +54,13 @@ export class QueryEditorComponent implements OnInit {
 
   ngOnInit() {
 
-    var subscr$ = this.searchService.getMappings().subscribe(
-      data => {
-        // since this is a Log-Specific Feature we alwys want the definition of the log-Type
-        subscr$.unsubscribe();
-        this.fields = data;
-        this.mappings = this.mapToJson(this.fields);
-      },
-      error => {
-        // TODO: Error-Handling here
-        subscr$.unsubscribe();
+    this.searchService.getMappings().subscribe(k => {
+      this.mappings = k;
+      this.esIndexes = Object.keys(this.mappings);
+      if (this.esIndexes.length > 0){
+        this.esIndexSelectComponent.choosen = 0;
       }
-    );;
+    });
 
   }
 
@@ -106,6 +104,11 @@ export class QueryEditorComponent implements OnInit {
     this.scope = service_binding;
   }
 
+  did_select_index(index){
+    this.elasticIndex = index;
+    console.log(this.elasticIndex);
+  }
+
 
   cancel_query_editor(){
     this.close_query_editor.next();
@@ -118,10 +121,6 @@ export class QueryEditorComponent implements OnInit {
     this.cancel_query_editor();
   }
 
-  
 
-  mapToJson(map) {
-    return JSON.stringify(map);
-  }
 
 }

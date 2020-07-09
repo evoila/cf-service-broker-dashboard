@@ -1,20 +1,19 @@
-<div class="query-editor-frame">
-
-  <div id="index_viewer">
-    <p> available indexes:</p>
-    <div id="index_p" >
-      <span> {{ mappings }} </span>
-    </div>
-  </div>
-
-  <!--
+ <!--
     <p> demo query: </p>
     <p> {{  query.name  + ': '  + query.boolQuery.to_json() }} </p>
   -->
-  
+
+<h5>Elastic BoolQuery Editor</h5>
+
+<div class="query-editor-frame">
+
+  <div>
+    <sb-esindex #indexKeysDropdownSelect class="es-index-select" [indexList]="esIndexes" (index)="did_select_index($event)"></sb-esindex>
+  </div>
+
   <div id="query_creation_div">
     <label for="q_textarea">Elastic Bool Query : </label>
-    <textarea id="q_textarea" name="q_textarea" rows="30" cols="200" placeholder="insert 'must' part of query here">
+    <textarea id="q_textarea" name="q_textarea" rows="8" cols="200" placeholder="insert 'must' part of query here">
       
       {{ es_bool_query_text_area_must }}
 
