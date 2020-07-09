@@ -1,6 +1,7 @@
 <div class="container">
   <div>
-    <sb-esindex #indexKeysDropdownSelect *ngIf="isTimEnv" class="es-index-select" [indexList]="esIndexes" (index)="did_select_index($event)"></sb-esindex>
+    <sb-esindex #indexKeysDropdownSelect *ngIf="isTimEnv" class="es-index-select" [indexList]="esIndexes"
+      (index)="did_select_index($event)"></sb-esindex>
   </div>
   <div class="nav-container">
     <sb-appid [selected]="scope.appId" class="appId" (app)="setScope($event)"></sb-appid>
@@ -8,7 +9,7 @@
     <!-- <div *ngIf="deploymentEnvironment && deploymentEnvironment === 'managementportal'">
         <select [ngModel]="elasticIndex"></select>
     </div> -->
-    
+
     <button [ngClass]="{'btn-primary': !streaming, 'btn-danger': streaming, 'btn btn-primary': true}"
       class="btn btn-primary" (click)="toggleStream()" [disabled]="buttonDisabled">
       {{streaming? 'stop': 'start'}}
@@ -16,6 +17,6 @@
     </button>
   </div>
   <main>
-    <sb-log-list [searchResponse]="hits$"></sb-log-list>
+    <sb-log-list [searchResponse]="hits$" [monacoFieldSelection]="monacoFieldSelection"></sb-log-list>
   </main>
 </div>

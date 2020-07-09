@@ -39,13 +39,20 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
   hits$ = new Observable<Hits | HighlightingAndHits>(k => this.hitSubject.subscribe(k));
   // this variable tells wether the app is deployes in cf, tim or kubernetes mode
   deploymentEnvironment: string;
-<<<<<<< HEAD
-  elasticIndex;
-=======
-  isTimEnv : boolean = false;
-  elasticIndex : string;
 
->>>>>>> d3634f474bde12b1cb919e84dc2930fa423958b3
+  elasticIndex: string;
+
+  get monacoFieldSelection(): string {
+    if (this.isTimEnv) {
+      return "COMPLETEOBJECT";
+    } else {
+      return "logMessage";
+    }
+  }
+
+  get isTimEnv(): boolean {
+    return this.deploymentEnvironment == BindingTypeIdentifier.MANAGEMENTPORTAL;
+  }
   /* 
      Config-Values 
      for Request-Scheduling 
@@ -79,15 +86,15 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
     this.searchService.getMappings().subscribe(k => {
       this.mappings = k;
       this.esIndexes = Object.keys(this.mappings);
-      if (this.esIndexes.length > 0){
+      if (this.esIndexes.length > 0) {
         this.esIndexSelectComponent.choosen = 0;
       }
     });
     this.store.select(getBindingsLoadingState).pipe(
       filter(state => state.loaded == true), switchMap(k => this.store.select(getBindingsAuthMetadata))
-    ).subscribe(k => { 
+    ).subscribe(k => {
       this.deploymentEnvironment = k.type
-      this.isTimEnv = this.deploymentEnvironment == BindingTypeIdentifier.MANAGEMENTPORTAL;
+
     });
 
   }
@@ -102,7 +109,7 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
     }
   }
   setScope(scope: ServiceBinding) {
-    if (this.streaming){
+    if (this.streaming) {
       this.toggleStream();
     }
     if (scope && Object.keys(scope).length) {
@@ -188,8 +195,8 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
 
 
 
-  did_select_index(index){
-    if (this.streaming){
+  did_select_index(index) {
+    if (this.streaming) {
       this.toggleStream();
     }
     this.elasticIndex = index;

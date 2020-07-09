@@ -6,15 +6,27 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
   styleUrls: ['./esindex.component.scss']
 })
 export class EsindexComponent implements OnInit {
-
+  // Returns choosen ES-Index with Wildcard so that the missing Dates are ignored
   @Output('index')
   index = new EventEmitter<string>();
+  // Returns choosen ES-Index without the necessary date-prefix 
+  @Output('rawIndex')
+  rawIndex = new EventEmitter<string>();
+
+
+  esIndexes = Array<string>();
 
   @Input('indexList')
-  esIndexes = Array<string>();
-  
+  set indexList(esIndexes: Array<string>) {
+    if (esIndexes && esIndexes.length) {
+      this.index.next("*-" + esIndexes[0]);
+      this.rawIndex.next(esIndexes[0]);
+    }
+    this.esIndexes = esIndexes;
+  }
+
   choosen: number = -1;
- 
+
   constructor() { }
 
 
@@ -24,9 +36,10 @@ export class EsindexComponent implements OnInit {
   }
 
 
-  
+
   public setChoosen() {
-    this.index.next(this.esIndexes[this.choosen]);
+    this.index.next("*-" + this.esIndexes[this.choosen]);
+    this.rawIndex.next(this.esIndexes[this.choosen]);
   }
 
 
