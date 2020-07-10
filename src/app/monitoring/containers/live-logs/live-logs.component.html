@@ -5,6 +5,7 @@
   <div class="nav-container">
     <sb-esindex #indexKeysDropdownSelect *ngIf="isTimEnv" class="es-index-select" [indexList]="esIndexes"
       (index)="did_select_index($event)"></sb-esindex>
+      <input type="text" class="form-control" [(ngModel)]="size" id="resCount" text="10">
     <sb-appid [selected]="scope.appId" class="appId" (app)="setScope($event)"></sb-appid>
     <!-- tell wether the app is running in tim, cf or kubernetes mode. tim mode supports index selection -->
     <!-- <div *ngIf="deploymentEnvironment && deploymentEnvironment === 'managementportal'">

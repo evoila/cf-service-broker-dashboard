@@ -61,9 +61,10 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
 
   interval = 5000;
   // amount of lines being polled
-  size = 400;
+  size = 15;
   // maximal Number of Log-Messages displayed
   maxElements = 5000;
+
 
   constructor(private searchService: SearchService,
     private timeService: TimeService,
