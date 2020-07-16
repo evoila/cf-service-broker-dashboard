@@ -12,7 +12,6 @@ import { filter, take } from 'rxjs/operators';
 import { forwardRef } from '@angular/core';
 import { ESQuery_Request } from '../../model/es-query-request';
 
-
 @Component({
   selector: 'sb-table-editor',
   templateUrl: './table-editor.component.html',

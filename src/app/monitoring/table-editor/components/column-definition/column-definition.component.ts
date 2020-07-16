@@ -106,7 +106,7 @@ export class ColumnDefinitionComponent implements OnInit {
 
   // TODO: DELETE COLUMNDEFINITION's QUERY_ID FIELD - it's not used and doesn't make sense 
   public saveColumn(){
-    const col_def = new ColumnDefinition(this.parent.validated_scoped_selected_queries[0].query.id, this.cdef_name, this.cdef_path)
+    const col_def = new ColumnDefinition(this.parent.validated_scoped_selected_queries[0].query.id!, this.cdef_name, this.cdef_path)
     this.update_column.next(col_def);
     this.deselect_all();
     this.show_column_preview = false;

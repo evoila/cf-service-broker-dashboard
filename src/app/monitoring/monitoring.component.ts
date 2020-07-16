@@ -123,10 +123,10 @@ export class MonitoringComponent implements OnInit {
       name: 'Charts',
       isCollapsible: false,
       links: [
-        {
+       /* {
           name: 'chart configurator',
           href: 'chartconfigurator'
-        },
+        },*/
         {
           name: 'table configurator',
           href: 'tableeditor'

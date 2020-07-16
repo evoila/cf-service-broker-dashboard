@@ -140,7 +140,8 @@ export class BaseQueryInputComponent implements OnInit {
 
   showQueryEditor(){
     // event output to parent component (query-group-component) which will forward event to grandparent (table-editor-component) 
-    this.open_query_editor.next();
+    //this.open_query_editor.next();
+    alert('Query self construction editor will be available in upcoming releases.');
   }
 
 
