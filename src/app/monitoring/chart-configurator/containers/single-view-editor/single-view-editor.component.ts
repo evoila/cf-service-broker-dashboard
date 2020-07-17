@@ -19,7 +19,7 @@ import {
   SetChartType,
   SetChartOptions
 } from '../../store/actions/chart.increation.action';
-import { CfAuthParameterService } from '../../../shared/services/cfauth-param.service';
+import { AuthParameterService } from '../../../shared/services/auth-param.service';
 import { BindingsState } from '../../../shared/store/reducers/binding.reducer';
 import { Router } from '@angular/router';
 import * as chartTypes from '../../model/chart-types';
@@ -27,6 +27,7 @@ import { getOptionsState } from '../../store/selectors/options.selector';
 import { SetChartName } from '../../store/actions/chart.increation.action';
 import { SetTitle } from '../../store';
 import { ChartOptionsEntity } from '../../model/chart-options-entity';
+import { AuthScope } from '../../model/authScope';
 
 @Component({
   selector: 'sb-single-view-editor',
@@ -40,12 +41,12 @@ export class SingleViewEditorComponent implements OnInit {
   options: Array<ChartOptionsEntity>;
   editorPresent: boolean = false;
 
-  authParamService: CfAuthParameterService;
+  authParamService: AuthParameterService;
   constructor(
     private store: Store<ChartIncreationState>,
     private chartModelStore: Store<ChartModelState>,
     storeBindings: Store<BindingsState>,
-    authParamService: CfAuthParameterService,
+    authParamService: AuthParameterService,
     private router: Router
   ) {
     this.authParamService = authParamService.construct(storeBindings);
@@ -120,9 +121,10 @@ export class SingleViewEditorComponent implements OnInit {
           return Object.keys(k).length > 0 && k.name && k.type;
         }),
         switchMap((chart: Chart) => {
-          return this.authParamService.createCfAuthScope().pipe(
+          console.log('this ?');
+          return this.authParamService.createAuthScope().pipe(
             take(1),
-            map((authScope: CfAuthScope) => {
+            map((authScope: AuthScope) => {
               return { ...chart, authScope };
             }),
             map((chart: Chart) =>

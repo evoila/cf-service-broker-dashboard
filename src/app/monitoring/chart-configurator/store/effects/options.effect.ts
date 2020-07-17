@@ -16,29 +16,54 @@ import {
 import { of } from 'rxjs/internal/observable/of';
 import { Store } from '@ngrx/store';
 
-import { getBindingsSpaceAndOrg } from '../../../shared/store/selectors/bindings.selector';
+import { getBindingsAuthMetadata} from '../../../shared/store/selectors/bindings.selector';
+import { CfAuthScope } from '../../model/cfAuthScope';
+import { BindingTypeIdentifier } from 'app/monitoring/model/service-binding';
+import { ServiceBrokerServiceBinding, SpaceAndOrg } from 'app/monitoring/model/service-broker-service-binding';
+import { KcAuthScope } from '../../model/kcAuthScope';
+import { PartnerAndCustomer } from 'app/monitoring/model/management-portal-service-binding';
+
 
 @Injectable()
 export class OptionsEffects {
   // Mocked entitis until Binding Service ist part of the ngrx-Store Concept
   private readonly mockedSpace = 'servicebroker-dev';
   private readonly mockedOrg = 'a6cec6a0-f163-4601-a573-484c9743bfa6';
-
+  
+  private kcMockedAuthScope = {
+      type: 'kc',
+      serviceInstanceId: environment.serviceInstanceId,
+      partnerId: this.mockedOrg,
+      customerId: this.mockedSpace
+  }
+  
   private request = {
-    serviceInstanceId: environment.serviceInstanceId,
-    space: this.mockedSpace,
-    org: this.mockedOrg
+    chartType: '',
+    authScope: {
+      type: 'cf',
+      serviceInstanceId: environment.serviceInstanceId,
+      orgId: this.mockedOrg,
+      spaceId: this.mockedSpace
+    }  as CfAuthScope
+    
   } as OptionsRequestObject;
 
   @Effect()
   loadOptions$ = this.actions.pipe(ofType(optionActions.LOAD_OPTIONS),
     switchMap((chartType: optionActions.LoadOptions) => {
-      return this.optionsStore.select(getBindingsSpaceAndOrg).pipe(
+      return this.optionsStore.select(getBindingsAuthMetadata).pipe(
         take(1),
-        switchMap(bindings => {
-          this.request.space = bindings.space;
-          this.request.org = bindings.org;
-
+        switchMap(bindingsMeta => {
+          
+          if(bindingsMeta.type === BindingTypeIdentifier.SERVICEBROKER){
+            const cfMeta = (bindingsMeta as SpaceAndOrg);
+            (this.request.authScope as CfAuthScope).spaceId = cfMeta.space;
+            (this.request.authScope as CfAuthScope).orgId = cfMeta.org;
+          }
+          else if(bindingsMeta.type === BindingTypeIdentifier.MANAGEMENTPORTAL){
+            const kcMeta = (bindingsMeta as PartnerAndCustomer);
+            (this.request.authScope as KcAuthScope) = { ...this.kcMockedAuthScope, partnerId: kcMeta.partner, customerId: kcMeta.customer }
+          }
           this.request.chartType = chartType.payload;
           return this.optionService.getOptions(this.request).pipe(
             map(options => new LoadOptionsSuccess(options)),

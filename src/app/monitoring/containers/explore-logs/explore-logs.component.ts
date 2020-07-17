@@ -1,18 +1,22 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Filter } from 'app/monitoring/model/filter';
-import { ServiceBinding } from '../../model/service-binding';
+import { ServiceBinding, BindingTypeIdentifier } from '../../model/service-binding';
 import { SearchRequest, TimeRange } from '../../model/search-request';
 import { SearchService } from '../../shared/services/search.service';
 import { Hits, SearchResponse } from '../../model/search-response';
-import { Subject, Subscription } from 'rxjs';
-import { Observable } from 'rxjs/internal/Observable';
-import { tap, filter, timestamp } from 'rxjs/operators';
+import { Subject, Subscription, Observable } from 'rxjs';
+import { tap, filter, switchMap } from 'rxjs/operators';
 import { NotificationService, Notification, NotificationType } from '../../../core/notification.service';
 import * as moment from 'moment/moment';
 import { TimeService } from '../../shared/services/time.service';
 import { ShortcutService } from '../../../core/services/shortcut.service';
 import { LogFilterComponent } from '../../components/log-messages/log-filter/log-filter.component';
 import { HighlightingAndHits } from '../../components/log-messages/log-list/log-list.component';
+import { authScopeFromBinding } from 'app/monitoring/chart-configurator/model/cfAuthScope';
+//import { EsindexComponent } from 'app/monitoring/shared/components/esindex/esindex.component';
+import { BindingsState } from 'app/monitoring/shared/store/reducers/binding.reducer';
+import { Store } from '@ngrx/store';
+import { getBindingsLoadingState, getBindingsAuthMetadata } from '../../shared/store/selectors/bindings.selector';
 
 @Component({
   selector: 'sb-explore-logs',
@@ -21,6 +25,7 @@ import { HighlightingAndHits } from '../../components/log-messages/log-list/log-
 })
 export class ExploreLogsComponent implements OnInit, OnDestroy {
   @ViewChild(LogFilterComponent) logFilter;
+
 
   fromDate: any = moment().subtract(2, "days").unix();
   toDate: any = moment().unix();
@@ -41,6 +46,24 @@ export class ExploreLogsComponent implements OnInit, OnDestroy {
 
   private subscriptions: Array<Subscription> = [];
 
+  // this variable tells wether the app is deployes in cf, tim or kubernetes mode
+  deploymentEnvironment: string;
+  mappings: Map<string, Array<string>>;
+  esIndexes: Array<string>;
+  elasticIndex: string;
+
+  get monacoFieldSelection(): string {
+    if (this.isTimEnv) {
+      return "COMPLETEOBJECT";
+    } else {
+      return "logMessage";
+    }
+  }
+
+  get isTimEnv(): boolean {
+    return this.deploymentEnvironment == BindingTypeIdentifier.MANAGEMENTPORTAL;
+  }
+
   // needed for the scoping component as an input
   appId: string;
 
@@ -58,7 +81,8 @@ export class ExploreLogsComponent implements OnInit, OnDestroy {
     private searchService: SearchService,
     private notification: NotificationService,
     private timeService: TimeService,
-    private shortcut: ShortcutService) { }
+    private shortcut: ShortcutService,
+    private store: Store<BindingsState>) { }
 
   ngOnInit() {
     const sub = this.shortcut.bindShortcut({
@@ -72,6 +96,20 @@ export class ExploreLogsComponent implements OnInit, OnDestroy {
     });
     this.setDateInfo();
     this.subscriptions = [...this.subscriptions, sub];
+
+
+    this.searchService.getMappings().subscribe(k => {
+      this.mappings = k;
+      this.esIndexes = Object.keys(this.mappings);
+      
+    });
+    this.store.select(getBindingsLoadingState).pipe(
+      filter(state => state.loaded === true), switchMap(k => this.store.select(getBindingsAuthMetadata))
+    ).subscribe(k => {
+      this.deploymentEnvironment = k.type
+
+    });
+
   }
 
   ngOnDestroy() {
@@ -155,13 +193,13 @@ export class ExploreLogsComponent implements OnInit, OnDestroy {
 
     let searchRequest = {
       appName: this.scope.appName,
-      space: this.scope.space,
-      orgId: this.scope.organization_guid,
+      authScope: authScopeFromBinding(this.scope as ServiceBinding),
       filter: this.filter,
       docSize: {
         from,
         size: this.size
-      }
+      },
+      index: this.elasticIndex
     } as SearchRequest;
 
 
@@ -187,5 +225,10 @@ export class ExploreLogsComponent implements OnInit, OnDestroy {
       }),
       filter((data: SearchResponse) => !data.timed_out && data.hits.total !== 0)
     );
+  }
+
+
+  did_select_index(index) {
+    this.elasticIndex = index;
   }
 }

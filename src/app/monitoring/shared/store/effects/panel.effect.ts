@@ -21,7 +21,7 @@ export class PanelEffect {
   @Effect()
   loadPanel$ = this.actions.pipe(ofType(LOAD_PANELS),
     switchMap(action =>
-      this.panelService.getAllCharts().pipe(
+      this.panelService.getPanels().pipe(
         map(result => new LoadPanelsSuccess(result)),
         catchError(error => of(new LoadPanelsFailed()))
       )

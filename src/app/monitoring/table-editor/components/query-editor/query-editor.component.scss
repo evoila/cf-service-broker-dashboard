@@ -1,5 +1,14 @@
 @import '../../../../core/core';
 
+.es-index-select{
+    cursor: pointer;
+    margin: 0px 5px 5px 0px ;
+}
+
+#query_creation_div{
+    
+}
+
 
 .query-editor-frame{
 
@@ -13,6 +22,11 @@
 }
 
 .btn.btn-primary.save_q{
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.btn.btn-primary.test_q{
     margin: 10px;
     border-radius: 10px;
 }

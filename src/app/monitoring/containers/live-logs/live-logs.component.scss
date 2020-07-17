@@ -7,7 +7,7 @@
 }
 .nav-container {
     display: grid;
-    grid-template-columns: 245px 80px;
+    grid-template-columns:  277px 62px 245px 80px;
     grid-gap: 0.6em;
     margin-right: 3vw;
     margin-bottom: 3vh;
@@ -17,7 +17,10 @@
     align-self: start;
     cursor: pointer;
 }
-
+.es-index-select{
+    cursor: pointer;
+    margin: 0px 5px 5px 0px ;
+}
 
 .btn.btn-danger {  //start button when acting as stop button
     height: 2.4em;
@@ -50,5 +53,13 @@
     height: 2.4em;
     align-self: start;
     border-radius: $basic-border-radius;
+}
+
+#resCount{
+    border-radius: $basic-border-radius;
+    border: 3px solid $gray-4;
+}
+#resCount:hover{
+    border: 3px solid $secondary-color;
 }
 

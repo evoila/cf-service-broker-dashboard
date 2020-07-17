@@ -1,8 +1,6 @@
 
 
-<div id="collapsed-base-input">
-  <span id="get-more-data" *ngIf="baseInputCollapsed" (click)="decollapse_base_query_input()"> get more data <!--<i class="fas fa-plus"></i> --> </span> 
-</div>
+
 
 <h6 id="base-query-header" *ngIf="!baseInputCollapsed">Get Data from Elastic Search:</h6>
 
@@ -18,4 +16,8 @@
   <p id="base-data-list-header">selected data: </p>
   <span *ngFor="let descr of selected_query_descriptions;" (click)="drop_base_data_brick(descr)"
   id="base-data-brick" class="btn btn-secondary">{{descr}}</span>
+  
+  <!-- <div id="collapsed-base-input"> -->
+    <span id="get-more-data" *ngIf="baseInputCollapsed" (click)="decollapse_base_query_input()"> get more data <!--<i class="fas fa-plus"></i> --> </span> 
+  <!--</div> -->
 </div>

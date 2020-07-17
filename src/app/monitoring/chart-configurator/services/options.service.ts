@@ -8,6 +8,7 @@ import { ChartOptionsEntity } from '../model/chart-options-entity';
 import { HttpGetParamsService } from '../../../core/services/http-get-params.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError } from 'rxjs/internal/operators';
+import { environment } from 'environments/runtime-environment';
 
 @Injectable({
   providedIn: 'root'
@@ -29,9 +30,11 @@ export class OptionsService {
   public getOptions(
     request: OptionsRequestObject
   ): Observable<Array<ChartOptionsEntity>> {
-    const params = this.privateHttpGetParams.convertParams(request);
+    
+    const params = this.privateHttpGetParams.convertParams({...{chartType: request.chartType }, ...request.authScope});
+    console.log(params);
     const httpOptions = Object.assign({ params: params }, this.httpOptions);
-
+    console.log(httpOptions);
     return this.http
       .get<Array<ChartOptionsEntity>>(this.url, httpOptions)
       .pipe(catchError(err => this.errorService.handleErrors(err)));
@@ -44,9 +47,17 @@ export class OptionsService {
       .pipe(catchError(err => this.errorService.handleErrors(err)));
   }
   public deleteOptions(optionsId: number) {
-    const url = this.url + optionsId;
+    const special_delete_url = this.endpointService.getUri() + '/charting/options/serviceInstance/' + environment.serviceInstanceId; // + optionsId;
+    //TODO: 
+    
+    /*
+    done:  /v1/charting/options/org/{orgId}/space/{spaceId}/serviceInstance/{serviceInstanceId} has chagned to /v1/charting/options/serviceInstance/{serviceInstanceId}
+    not done: AND  --> add AuthScope as Request Parameters
+    
+    */
+    
     return this.http
-      .delete(url, this.httpOptions)
+      .delete(special_delete_url, this.httpOptions)
       .pipe(catchError(err => this.errorService.handleErrors(err)));
   }
 }

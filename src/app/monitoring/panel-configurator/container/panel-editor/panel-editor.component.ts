@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Chart } from '../../../shared/model/chart';
 import { Observable } from 'rxjs/internal/Observable';
@@ -7,8 +7,7 @@ import { getCharts } from '../../../shared/store/selectors/chart.selector';
 import { PanelIncreationState } from '../../store/reducers/panel-increation.reducer';
 import * as panelAction from '../../store/actions/panel-increation.action';
 import * as panelSelectors from '../../store/selectors/panel-increation.selector';
-import { CfAuthScope } from 'app/monitoring/chart-configurator/model/cfAuthScope';
-import { CfAuthParameterService } from '../../../shared/services/cfauth-param.service';
+import { AuthParameterService } from '../../../shared/services/auth-param.service';
 import { BindingsState } from '../../../shared/store/reducers/binding.reducer';
 import { ChartModelState } from '../../../shared/store/reducers/chart.reducer';
 import { LoadCharts } from '../../../shared/store/actions/chart.actions';
@@ -22,6 +21,9 @@ import { Router } from '@angular/router';
 import { LoadPanels, UpdatePanel, DeletePanel } from '../../../shared/store/actions/panel.action';
 import { ShortcutService } from '../../../../core/services/shortcut.service';
 import { PanelElement } from 'app/monitoring/shared/model/panel-element';
+import { AuthScope } from 'app/monitoring/chart-configurator/model/authScope';
+import { environment } from 'environments/runtime-environment';
+import { getBindingsLoadingState, LoadBindings, getAllBindingsEntities } from 'app/monitoring/chart-configurator/store';
 
 @Component({
   selector: 'sb-panel-editor',
@@ -34,22 +36,22 @@ export class PanelEditorComponent implements OnInit {
   public name: string;
   public description: string;
   public onEdit: boolean;
-  public authScope: CfAuthScope;
+  public authScope: AuthScope;
 
 
   private subscriptions: Array<Subscription> = [];
-  private cfAuthParams: CfAuthParameterService;
+  private authParams: AuthParameterService;
 
   constructor(
     private chartStore: Store<ChartModelState>,
     private panelStore: Store<PanelIncreationState>,
     private panelModelStore: Store<PanelState>,
     private router: Router,
-    bindingStore: Store<BindingsState>,
-    cfAuthParams: CfAuthParameterService,
+    private bindingStore: Store<BindingsState>,
+    authParams: AuthParameterService,
     private shortcut: ShortcutService
   ) {
-    this.cfAuthParams = cfAuthParams.construct(bindingStore);
+    this.authParams = authParams.construct(bindingStore);
   }
 
   ngOnInit() {
@@ -66,7 +68,8 @@ export class PanelEditorComponent implements OnInit {
       this.onEdit = k;
     });
     this.charts$.subscribe(k => console.log(k));
-    this.cfAuthParams.createCfAuthScope().subscribe(k => (this.authScope = k));
+    //const bindingType = this.getBindingType() == 'servicebroker' ? 'cf' : 'kc';
+    this.authParams.createAuthScope().subscribe(k => (this.authScope = k));
 
     const sub = this.shortcut.bindShortcut({
       key: "Enter",
@@ -127,4 +130,9 @@ export class PanelEditorComponent implements OnInit {
     this.panelStore.dispatch(new panelAction.FlushState());
     this.router.navigate(['/monitoring']);
   }
+
+
+  
+
+
 }

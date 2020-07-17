@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { CfAuthParameterService } from 'app/monitoring/shared/services/cfauth-param.service';
+import { AuthParameterService } from 'app/monitoring/shared/services/auth-param.service';
 import { ChartIncreationState } from 'app/monitoring/chart-configurator/store/reducers/chart.increation.reducer';
 import { Store } from '@ngrx/store';
 import { BindingsState } from 'app/monitoring/shared/store/reducers/binding.reducer';
@@ -25,11 +25,11 @@ export class ScopingComponent implements OnInit {
 
   aggRequObj: AggregationRequestObject;
 
-  private authParamService: CfAuthParameterService;
+  private authParamService: AuthParameterService;
   constructor(
     private store: Store<ChartIncreationState>,
     storeBindings: Store<BindingsState>,
-    authParamService: CfAuthParameterService
+    authParamService: AuthParameterService
   ) {
     this.authParamService = authParamService.construct(storeBindings);
   }

@@ -1,10 +1,9 @@
 import { createSelector } from '@ngrx/store';
 import * as fromBindings from '../reducers/binding.reducer';
 import { SharedModuleState, getSharedModuleState } from '../reducers/index';
-import {
-  SpaceAndOrg,
-  ServiceBinding
-} from 'app/monitoring/model/service-binding';
+import { ServiceBrokerServiceBinding } from 'app/monitoring/model/service-broker-service-binding';
+import { ManagementPortalServiceBinding } from 'app/monitoring/model/management-portal-service-binding';
+import { BindingTypeIdentifier, ServiceBinding, BindingAuthMetadata } from '../../../model/service-binding';
 /*
  * Binding State
  */
@@ -38,17 +37,41 @@ export const getBindingsLoadingState = createSelector(
     };
   }
 );
-// Returns a Single State and Org object
-export const getBindingsSpaceAndOrg = createSelector(
+
+
+
+export const getBindingsAuthMetadata = createSelector(
   getAllBindingsEntities,
   (entities: Array<ServiceBinding>) => {
-    return entities.length == 0 ? { space: "", org: "" } : entities
-      .map(entity => {
+    if (entities.length == 0) {
+
+      return { type: "" }
+
+    } else {
+      let entity: any = entities[0];
+      if (entity.type == BindingTypeIdentifier.SERVICEBROKER) {
+
+        entity = entity as ServiceBrokerServiceBinding;
         return {
-          org: entity.organization_guid,
-          space: entity.space
-        } as SpaceAndOrg;
-      })
-      .reduce(k => k) as SpaceAndOrg;
+          org: entity.authScope.orgId,
+          space: entity.space,
+          type: BindingTypeIdentifier.SERVICEBROKER
+        } as BindingAuthMetadata;
+
+      } else {
+
+        entity = entity as ManagementPortalServiceBinding;
+        return {
+          partner: entity.partner,
+          customer: entity.customer,
+          type: BindingTypeIdentifier.MANAGEMENTPORTAL
+        } as BindingAuthMetadata;
+
+      }
+    }
   }
-);
+)
+
+
+
+

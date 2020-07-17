@@ -80,7 +80,7 @@ export const bootstrapDeps = [
     ...bootstrapDeps,
     MonacoEditorModule.forRoot(monacoEditorConfig),
     DragDropModule,
-    SharedModule,
+    SharedModule.forRoot(),
     ChartConfiguratorModule,
     TableEditorModule,
     StoreModule.forRoot(reducers, { metaReducers }),

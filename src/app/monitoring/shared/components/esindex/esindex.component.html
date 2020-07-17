@@ -1,0 +1,10 @@
+<div class="box">
+    <select *ngIf="esIndexes && esIndexes.length" class="custom-select mr-sm-2 indexKey"
+        [(ngModel)]="choosen" name="..." (change)="setChoosen()"
+        [ngClass]="esIndexes[this.choosen] ? 'chosen-alive': 'chosen-depr'">
+        <option selected *ngFor="let indexo of esIndexes; let i = index" [value]="i">
+            {{indexo}}
+        </option>
+    </select>
+    <label id="label">index:</label>
+</div>

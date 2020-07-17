@@ -11,7 +11,6 @@ import {
 } from '@angular/animations';
 import { tap, debounceTime, filter } from 'rxjs/operators';
 import { LogDataModel } from 'app/monitoring/model/log-data-model';
-import { HighlightingAndHits } from '../log-list/log-list.component';
 
 @Component({
   selector: 'sb-log-search',
@@ -43,6 +42,9 @@ export class LogSearchComponent implements OnInit, OnDestroy {
   @Input('pagination')
   page: number;
 
+  @Input('isTimEnv')
+  isTimEnv: boolean;
+
   @Input('steps')
   public steps: number;
 
@@ -54,7 +56,8 @@ export class LogSearchComponent implements OnInit, OnDestroy {
 
   @Output('logContextSeed')
   logContextSeedEmitter = new EventEmitter<LogDataModel>();
-
+  // hacky export to access it in template
+  json = JSON;
 
   public pages: number;
   private hits$Subscription: Subscription;

@@ -38,8 +38,8 @@ export function buildBuildTargetService(): BuildTargetService {
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
-    monShared.SharedModule.forRoot(),
-    CommonModule,
+    monShared.SharedModule,
+
     NgbDropdownModule,
     NgbCollapseModule,
     NgbTooltipModule,

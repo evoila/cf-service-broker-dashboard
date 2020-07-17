@@ -1,4 +1,5 @@
 import { ChartRequest } from './chart-request';
+import { AuthScope } from '../chart-configurator/model/authScope';
 
 export class EsChartRequest implements ChartRequest {
     index: string; //ElastcSearch Index to Search in 
@@ -6,10 +7,10 @@ export class EsChartRequest implements ChartRequest {
     appId?: string;
     appName?: string;
     range: any;
-    orgId: string;
+    authScope: AuthScope;
     chartId: string;
     order: number;
     size?: number;
     name: string;
-    space: string;
+    
 }

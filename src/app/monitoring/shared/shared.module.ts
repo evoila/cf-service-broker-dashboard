@@ -4,10 +4,11 @@ import { services } from "./services";
 import { components } from "./components";
 import { FormsModule } from "@angular/forms";
 import { directives } from "./directives";
+import { EsindexComponent } from "./components/esindex/esindex.component";
 
 @NgModule({
   imports: [CommonModule, FormsModule],
-  declarations: [...components, ...directives],
+  declarations: [...components, ...directives, EsindexComponent],
   exports: [...components, ...directives]
 })
 export class SharedModule {

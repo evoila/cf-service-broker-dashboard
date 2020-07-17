@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { SearchService } from '../../shared/services/search.service';
-import { ServiceBinding } from '../../model/service-binding';
+import { ServiceBinding, BindingTypeIdentifier } from '../../model/service-binding';
 import { timer, Subscription, Subject, Observable } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 import { SearchRequest, TimeRange } from '../../model/search-request';
@@ -9,6 +9,11 @@ import * as moment from 'moment/moment';
 import { TimeService } from '../../shared/services/time.service';
 import { ShortcutService } from '../../../core/services/shortcut.service';
 import { HighlightingAndHits } from '../../components/log-messages/log-list/log-list.component';
+import { authScopeFromBinding } from 'app/monitoring/chart-configurator/model/cfAuthScope';
+import { Store } from '@ngrx/store';
+import { getBindingsLoadingState, getBindingsAuthMetadata } from '../../shared/store/selectors/bindings.selector';
+import { BindingsState } from '../../shared/store/reducers/binding.reducer';
+import { EsindexComponent } from 'app/monitoring/shared/components/esindex/esindex.component';
 
 @Component({
   selector: 'sb-live-logs',
@@ -16,6 +21,9 @@ import { HighlightingAndHits } from '../../components/log-messages/log-list/log-
   styleUrls: ['./live-logs.component.scss']
 })
 export class LiveLogsComponent implements OnInit, OnDestroy {
+  
+
+
   scope: ServiceBinding = {} as ServiceBinding;
   streaming: boolean = false;
   private fromDate: any;
@@ -24,11 +32,27 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
   private streamSub: Subscription;
   appId: string;
   buttonDisabled: boolean = false;
-
+  mappings: Map<string, Array<string>>;
+  esIndexes: Array<string>;
   //Observable to pass data to subcomponent
   hitSubject = new Subject<Hits | HighlightingAndHits>();
   hits$ = new Observable<Hits | HighlightingAndHits>(k => this.hitSubject.subscribe(k));
+  // this variable tells wether the app is deployes in cf, tim or kubernetes mode
+  deploymentEnvironment: string;
 
+  elasticIndex: string;
+
+  get monacoFieldSelection(): string {
+    if (this.isTimEnv) {
+      return "COMPLETEOBJECT";
+    } else {
+      return "logMessage";
+    }
+  }
+
+  get isTimEnv(): boolean {
+    return this.deploymentEnvironment == BindingTypeIdentifier.MANAGEMENTPORTAL;
+  }
   /* 
      Config-Values 
      for Request-Scheduling 
@@ -37,13 +61,15 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
 
   interval = 5000;
   // amount of lines being polled
-  size = 400;
+  size = 15;
   // maximal Number of Log-Messages displayed
   maxElements = 5000;
 
+
   constructor(private searchService: SearchService,
     private timeService: TimeService,
-    private shortcut: ShortcutService
+    private shortcut: ShortcutService,
+    private store: Store<BindingsState>
   ) { }
 
   ngOnInit() {
@@ -58,7 +84,21 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
       }
     });
     this.subscriptions = [...this.subscriptions, sub];
+    this.searchService.getMappings().subscribe(k => {
+      this.mappings = k;
+      this.esIndexes = Object.keys(this.mappings);
+      
+    });
+    this.store.select(getBindingsLoadingState).pipe(
+      filter(state => state.loaded == true), switchMap(k => this.store.select(getBindingsAuthMetadata))
+    ).subscribe(k => {
+      this.deploymentEnvironment = k.type
+
+    });
+
   }
+
+
   ngOnDestroy() {
     if (this.streamSub) {
       this.streamSub.unsubscribe();
@@ -68,7 +108,10 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
     }
   }
   setScope(scope: ServiceBinding) {
-    if (Object.keys(scope).length) {
+    if (this.streaming) {
+      this.toggleStream();
+    }
+    if (scope && Object.keys(scope).length) {
       this.scope = scope;
       this.buttonDisabled = false;
     }
@@ -127,12 +170,12 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
 
     let searchRequest = {
       appName: this.scope.appName,
-      space: this.scope.space,
-      orgId: this.scope.organization_guid,
+      authScope: authScopeFromBinding(this.scope),
       docSize: {
         from: 0,
         size: this.size
-      }
+      },
+      index: this.elasticIndex
     } as SearchRequest;
 
 
@@ -144,6 +187,18 @@ export class LiveLogsComponent implements OnInit, OnDestroy {
     if (this.fromDate) {
       searchRequest.range.from = this.fromDate;
     }
+    console.log(searchRequest.index);
+    console.log(searchRequest);
     return searchRequest;
   }
+
+
+
+  did_select_index(index) {
+    if (this.streaming) {
+      this.toggleStream();
+    }
+    this.elasticIndex = index;
+  }
+
 }

@@ -13,7 +13,7 @@
     <thead>
       <tr>
         <td class="row-index" style="opacity: 0.0;"></td>
-        <th sbResizer (sizeEmitter)="saveColumnWidth($event, table.columns[i])" [editControls]="editControl$" class="header-field" *ngFor="let col_name of table_header;  let i = index"> <!--  -->
+        <th class="header-field" *ngFor="let col_name of table_header;  let i = index"> <!-- sbResizer (sizeEmitter)="saveColumnWidth($event, table.columns[i])" [editControls]="editControl$" -->
           <span *ngIf="!is_editor_mode">{{col_name}}</span>
           <input *ngIf="is_editor_mode" type="text" class="form-control column-name" value="{{col_name}}" [(ngModel)]="table.columns[i].name" >
         </th>

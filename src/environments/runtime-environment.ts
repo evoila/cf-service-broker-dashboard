@@ -12,20 +12,21 @@ if (!injectedEnv) {
   seedEnv = {
     serviceInstanceId: "73047820-8d36-4323-bf2b-77dc887a707e",
     token:
-      "bearer eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vdWFhLnN5c3RlbS5jZi5ob2IubG9jYWwvdG9rZW5fa2V5cyIsImtpZCI6ImtleS0xIiwidHlwIjoiSldUIn0.eyJqdGkiOiJlZmU3NWZkZDc1YTA0OTA4YjJjMTUzNThlODU1OTVjZCIsInN1YiI6Ijg3ODM4ZDQ1LWU2NTMtNDE4Ny1iODAxLTBmMTE4MDRhYzAwOSIsInNjb3BlIjpbImNsb3VkX2NvbnRyb2xsZXIucmVhZCIsInBhc3N3b3JkLndyaXRlIiwiY2xvdWRfY29udHJvbGxlci53cml0ZSIsIm9wZW5pZCIsInNjaW0ud3JpdGUiLCJzY2ltLnJlYWQiLCJjbG91ZF9jb250cm9sbGVyLmFkbWluIiwidWFhLnVzZXIiXSwiY2xpZW50X2lkIjoiY2YiLCJjaWQiOiJjZiIsImF6cCI6ImNmIiwiZ3JhbnRfdHlwZSI6InBhc3N3b3JkIiwidXNlcl9pZCI6Ijg3ODM4ZDQ1LWU2NTMtNDE4Ny1iODAxLTBmMTE4MDRhYzAwOSIsIm9yaWdpbiI6IkV2b2lsYVNTTyIsInVzZXJfbmFtZSI6ImpoZXlsIiwiZW1haWwiOiJqaGV5bEBldm9pbGEuZGUiLCJyZXZfc2lnIjoiNWQ0MmI5ZDkiLCJpYXQiOjE1OTM2MDE3NDMsImV4cCI6MTU5MzYwMjM0MywiaXNzIjoiaHR0cHM6Ly91YWEuc3lzdGVtLmNmLmhvYi5sb2NhbC9vYXV0aC90b2tlbiIsInppZCI6InVhYSIsImF1ZCI6WyJzY2ltIiwiY2xvdWRfY29udHJvbGxlciIsInBhc3N3b3JkIiwiY2YiLCJ1YWEiLCJvcGVuaWQiXX0.tWfeq_f8ymubbIuONfQMFv_VVHfFzjoQJ9GO3zKVrqgk8FkyzTG8l3XMy-tvKt18lyfOF55DICqX7wN_3mwJoThFF6i2b6SyGMKADJBlyLYgHlaUh7OYatR_kOzAjRoj_oBwuM0oyuyIfCMYlLPzHxdYOlZXz4L7DkbeO2xmE0itSJG6fWjRlQZNN74Smjz86tU2vviN0quKW2HaMhjdidEsUH0jtm5ZHDGjy9qwH2n1Evma3ynJn7yjIC2MkN235q5vBzHG8WHJBv70GbSPfmBwEror_ywUUyXyk2CDfj9ilhSYjc16m0Pp7QWgC2ZxIAyr8vLixccs5GvXjQfOUA",
+      "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJQOG5VNGpDdDM0UXhqenExdXNhMXItZjVXb2VWeWp3SXo1RTZLQUxzN2FFIn0.eyJleHAiOjE1OTQ5NzU1MDMsImlhdCI6MTU5NDg4OTEwMywianRpIjoiZjE1MzFiYzctZTRjYS00MmZkLWI4OTktNTczNzg4NTAwOWM2IiwiaXNzIjoiaHR0cHM6Ly9zc28uc3lzdGVtLmNmLmhvYi5sb2NhbC9hdXRoL3JlYWxtcy9UaW1BRyIsInN1YiI6IjU5ZmQxNzYyLWYxMDctNDRhYy04NTIyLTYwMGEzMDUxYmQyZCIsInR5cCI6IkJlYXJlciIsImF6cCI6ImxvZy1tZXRyaWMtZGFzaGJvYXJkIiwic2Vzc2lvbl9zdGF0ZSI6IjZjNjU2MTdhLWIzZGItNDFhMi1iMmUwLTE3NjAxOWJmZjllMCIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsidGltLXVzZXIiLCJ0aW0tYWRtaW4iXX0sInNjb3BlIjoidGltYWciLCJyb2xlcyI6WyJ0aW0tdXNlciIsInRpbS1hZG1pbiJdLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJtbWFobGVyIiwiZW1haWwiOiJtbWFobGVyQGV2b2lsYS5kZSJ9.a3y1FH-0akXKdNl1ljosHjw_PMO3UHRfLLz5HmMcfSz17AKuxlD5Mq2dhzbhvZeb8TMUj89zTMR4wG9Xf-Qd3XbJc0638f44e4ymfpNW8JEuRS6UijmHF0jIKlO9uRZT3sWtlhsIrPXkIt9ij-jEHCcVb1fx6Xwr3V07Evh3ZuaSgcozJ3YiuOOXnySxeidoSLFpt9jh47KKLPyHH5_Wdw_-LVidSyPeKwu8p7YnYisx-1pUqWyhyCvQR9FJ_zqOTwTfC1-LNP08p10W411M17qfh-3ENqwV51v_UtXTPXpSo9Z0qMfTUWdiNiNff9_pAlhSHnAhhMILOC07lQLlkA",
 
     baseUrls: {
       serviceBrokerUrl: "https://osb-log-metric-test.system.cf.hob.local"
     },
     production: false,
     customEndpoints: [
-      {
-        url:
-          "https://osb-log-metric-dashboard-backend-test.system.cf.hob.local",
-        identifier: "log-metric-backend"
-      },
+      //{ url: 'https://osb-log-metric-dashboard-backend-test.system.cf.hob.local', identifier: 'log-metric-backend' },
       //{ url: 'https://log-metric-backend-feature.system.cf.hob.local', identifier: 'log-metric-backend' },
       //{ url: 'http://localhost:8080', identifier: 'log-metric-backend' },
+      {
+        url:
+          "https://osb-log-metric-dashboard-backend-keycloak-test.system.cf.hob.local",
+        identifier: "log-metric-backend"
+      },
       { url: "http://localhost:8081", identifier: "osb-backup-manager" }
     ],
     ui: {

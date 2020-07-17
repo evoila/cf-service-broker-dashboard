@@ -5,7 +5,7 @@ import { SearchService } from '../../../../shared/services/search.service';
 import { Aggregation } from '../../../model/aggregation';
 import { Store } from '@ngrx/store';
 import { BindingsState } from 'app/monitoring/shared/store/reducers/binding.reducer';
-import { CfAuthParameterService } from 'app/monitoring/shared/services/cfauth-param.service';
+import { AuthParameterService } from 'app/monitoring/shared/services/auth-param.service';
 import { take } from 'rxjs/operators';
 import { AggregationRequestObject } from 'app/monitoring/chart-configurator/model/aggregationRequestObject';
 import { Subject } from 'rxjs';
@@ -43,11 +43,11 @@ export class CreateAggregationComponent implements OnInit {
   buttonSubject = new Subject<string>();
   buttonInput$ = new Observable<string>(k => this.buttonSubject.subscribe(k));
 
-  private authParamService: CfAuthParameterService;
+  private authParamService: AuthParameterService;
   constructor(
     private readonly searchService: SearchService,
     storeBindings: Store<BindingsState>,
-    authParamService: CfAuthParameterService,
+    authParamService: AuthParameterService,
     public store: Store<ChartIncreationAction>,
     private ws: WindowService
   ) {
@@ -79,7 +79,7 @@ export class CreateAggregationComponent implements OnInit {
 
   triggerPreview(aggregation: any) {
     this.authParamService
-      .createCfAuthScope()
+      .createAuthScope()
       .pipe(take(1))
       .subscribe(authScope => {
         let scopedAggregation = {

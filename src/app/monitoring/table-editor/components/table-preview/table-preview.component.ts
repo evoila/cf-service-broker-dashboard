@@ -34,6 +34,7 @@ export class TablePreviewComponent implements OnInit {
 
   public save_table(){
     const tab = new Table(this.table.title, this.columnDefinitions, this.parent.validated_scoped_selected_queries);
+    console.log(tab.id);
     this.store.dispatch(new SaveTable(tab));
     this.store.select(getTableModelState).pipe(filter(k=> k.saved_table != null)).pipe(take(1)).subscribe(k=> {
         var tab = k.saved_table;

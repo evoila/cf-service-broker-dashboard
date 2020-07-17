@@ -23,7 +23,7 @@
 }
 
 .head-group.head-group-1{ // appSelect & dateSelect
-    grid-template-columns: calc(100% - 12.2em) 11em;
+    grid-template-columns: 275px calc(100% - 12.2em - 285px) 11em;
     //width: calc(100% - 180px);
 }
 

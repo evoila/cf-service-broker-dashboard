@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EndpointService } from './endpoint.service';
-import { CfAuthParameterService } from './cfauth-param.service';
+import { AuthParameterService } from './auth-param.service';
 import { flatMap, map } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { Store } from '@ngrx/store';
@@ -11,19 +11,19 @@ import { Table } from '../model/table';
 @Injectable()
 export class TableService {
   private readonly url: string;
-  private cfAuthParams: CfAuthParameterService;
+  private authParams: AuthParameterService;
   constructor(
     private http: HttpClient,
     private endpoint: EndpointService,
     storeBindings: Store<BindingsState>,
-    cfAuthParams: CfAuthParameterService
+    authParams: AuthParameterService
   ) {
-    this.cfAuthParams = cfAuthParams.construct(storeBindings);
+    this.authParams = authParams.construct(storeBindings);
     this.url = `${endpoint.getUri()}/tables`;
   }
 
   public getAllTables(): Observable<Array<Table>> {
-    return this.cfAuthParams.createCfAuthParameters().pipe(
+    return this.authParams.createAuthParameters().pipe(
       flatMap(params => {
         return this.http.get<Array<Table>>(this.url, { params });
       })

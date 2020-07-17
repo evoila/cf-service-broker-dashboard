@@ -22,12 +22,20 @@ export class LogListComponent implements OnInit, OnDestroy {
   data: [Array<LogDataModel>, monaco.Range?, number?];
   @Output('more')
   public more = new EventEmitter<[number, boolean]>();
+  // Monaco extracvts one field out of the shown data by default it's logmessage but this
+  // property allows it to change
+  @Input('monacoFieldSelection')
+  public monacoFieldSelection = "logMessage";
+
+
+
+
 
   private highlightingRange: monaco.Range;
   private scollTo: number;
   private editor: any;
 
-  editorOptions = { readOnly: true, language: 'javascript', glyphMargin: true };
+  editorOptions = { readOnly: true, language: 'json', glyphMargin: true };
   code: string;
   logs: Array<String> = [];
 
@@ -54,9 +62,13 @@ export class LogListComponent implements OnInit, OnDestroy {
       })).subscribe((data: [Array<LogDataModel>, monaco.Range?, number?]) => {
         this.code = '';
         this.data = data;
-        if (this.data[0]) {
+        if (this.data && this.data[0]) {
           this.data[0].forEach(hit => {
-            this.code += hit._source.logMessage + '\n';
+            if (this.monacoFieldSelection === "COMPLETEOBJECT") {
+              this.code += JSON.stringify(hit._source) + '\n';
+            } else {
+              this.code += hit._source[this.monacoFieldSelection] + '\n';
+            }
           });
           if (data[1] || data[2]) {
             // we need some delay here since we have to wait until the data is rendered out
