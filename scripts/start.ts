@@ -22,7 +22,9 @@ function serve(buildTarget: string, cb) {
       "--configuration=" + buildTarget,
       "--aot=" + aot,
       "--port",
-      "9101"
+      "9101",
+      "--host", "192.168.0.6",
+      "--disableHostCheck"
     ]
   };
 
