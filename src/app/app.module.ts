@@ -1,5 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule, LOCALE_ID, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { NgModule, LOCALE_ID} from "@angular/core";
 import { FormsModule } from "@angular/forms";
 
 import * as monShared from "./monitoring/shared/shared.module";
@@ -25,7 +25,6 @@ import { SharedModule } from "./shared/shared.module";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthenticationInterceptor } from "./core/services/authentication.interceptor";
-import { CommonModule } from "@angular/common";
 
 export function buildBuildTargetService(): BuildTargetService {
   return new BuildTargetService(buildTarget);
@@ -55,7 +54,6 @@ export function buildBuildTargetService(): BuildTargetService {
 
     AppRoutingModule
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     { provide: BuildTargetService, useFactory: buildBuildTargetService },
     {
@@ -66,4 +64,4 @@ export function buildBuildTargetService(): BuildTargetService {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
